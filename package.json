@@ -13,7 +13,7 @@
     "test": "vitest run",
     "format": "prettier --write .",
     "predeploy": "pnpm build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist/public"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

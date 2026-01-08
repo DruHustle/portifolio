@@ -98,7 +98,7 @@ export default function IMSOPDetail() {
           <Link href="/">
             <a className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <img
-                src="/profile.jpg"
+                src="/portifolio/images/profile.jpg"
                 alt="Andrew Gotora"
                 className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover"
               />
@@ -107,7 +107,7 @@ export default function IMSOPDetail() {
               </span>
             </a>
           </Link>
-          <Link href="/#projects">
+          <Link href="/projects">
             <a className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-cyan-400 transition-colors">
               <ArrowLeft className="w-4 h-4" />
               Back to Projects

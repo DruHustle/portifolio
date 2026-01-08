@@ -144,7 +144,7 @@ export default function Home() {
           <Link href="/">
             <a className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity min-w-0">
               <img
-                src="/profile.jpg"
+                src="/portifolio/images/profile.jpg"
                 alt="Andrew Gotora"
                 className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-cyan-400 object-cover flex-shrink-0"
               />
@@ -154,18 +154,18 @@ export default function Home() {
             </a>
           </Link>
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            <Link href="/#projects">
+            <Link href="/projects">
               <a className="text-sm hover:text-teal-400 transition-all duration-300 hover:scale-105 inline-block">
                 Projects
               </a>
             </Link>
-            <Link href="/#skills">
+            <Link href="/skills">
               <a className="text-sm hover:text-teal-400 transition-all duration-300 hover:scale-105 inline-block">
                 Skills
               </a>
             </Link>
             <a
-              href="#about"
+              href="/about"
               className="text-sm hover:text-teal-400 transition-all duration-300 hover:scale-105 inline-block"
             >
               About
@@ -203,7 +203,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 w-full">
-                <a href="#projects" className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-teal-500 text-white font-semibold text-sm sm:text-base rounded-lg hover:bg-teal-600 transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/50 hover:scale-105 flex-1 xs:flex-none">
+                <a href="/projects" className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-teal-500 text-white font-semibold text-sm sm:text-base rounded-lg hover:bg-teal-600 transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/50 hover:scale-105 flex-1 xs:flex-none">
                   View Projects
                   <ChevronRight className="w-4 h-4" />
                 </a>

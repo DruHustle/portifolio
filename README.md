@@ -1,4 +1,4 @@
-# Portfolio for Andrew Gotora
+# Portifolio for Andrew Gotora
 
 A professional, interactive personal portfolio website built with React, TypeScript, and Vite. This site showcases a collection of projects with detailed descriptions, technology stacks, and links to live demos and source code.
 

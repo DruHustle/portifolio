@@ -47,7 +47,7 @@ pnpm build
 # Deploy to GitHub Pages
 echo "🚀 Deploying to GitHub Pages..."
 echo "NOTE: You may be asked for your GitHub credentials."
-pnpm deploy
+pnpm h-pages -d dist/public
 
 echo "✨ Deployment complete!"
 echo "🌐 Your website should be live at: https://\$(git remote get-url origin | sed -E 's/.*github.com[:\/](.*)\/portifolio.*/\1/').github.io/portifolio"

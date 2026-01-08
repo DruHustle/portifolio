@@ -4,21 +4,24 @@ import NotFound from "@/pages/NotFound";
 import Home from "@/pages/Home";
 import IMSOPDetail from "@/pages/IMSOPDetail";
 import SAPBTPAIHubDetail from "@/pages/SAPBTPAIHubDetail";
-import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { Route, Switch, Router as WouterRouter } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location";
 
-function Router() {
+function AppRouter() {
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/projects/imsop"} component={IMSOPDetail} />
-      <Route path={"/projects/sap-btp-ai-hub"} component={SAPBTPAIHubDetail} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <WouterRouter hook={useHashLocation}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/projects/imsop" component={IMSOPDetail} />
+        <Route path="/projects/sap-btp-ai-hub" component={SAPBTPAIHubDetail} />
+        <Route path="/404" component={NotFound} />
+        <Route component={NotFound} />
+      </Switch>
+    </WouterRouter>
   );
+
 }
 
 function App() {
@@ -27,7 +30,7 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <AppRouter />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

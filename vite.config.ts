@@ -19,9 +19,14 @@ export default defineConfig({
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    // This tells Vite to put the final files in /dist at the project root
+    outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
+    // Ensures assets are generated with relative paths
+      assetsDir: 'assets',
   },
+
+  
   server: {
     port: 3000,
     strictPort: false,

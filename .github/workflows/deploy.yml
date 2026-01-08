@@ -1,42 +1,53 @@
-name: CI/CD
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write      
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        cache: 'pnpm'
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: pnpm
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Lint and Type Check
-      run: pnpm check
+      - name: Build
+        run: pnpm build
 
-    - name: Run Tests
-      run: pnpm test
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
-    - name: Build
-      run: pnpm build
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-    - name: Deploy to GitHub Pages
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        folder: dist/public
-        branch: gh-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

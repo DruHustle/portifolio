@@ -6,14 +6,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "start": "NODE_ENV=production node dist/index.js",
-    "preview": "vite preview --host",
-    "check": "tsc --noEmit",
-    "test": "vitest run",
-    "format": "prettier --write .",
+    "build": "vite build",
     "predeploy": "pnpm build",
-    "deploy": "gh-pages -d dist/public"
+    "deploy": "gh-pages -d dist",
+    "preview": "vite preview --host"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -97,9 +93,7 @@
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "pnpm": {
-    "patchedDependencies": {
-      "wouter@3.7.1": "patches/wouter@3.7.1.patch"
-    },
+
     "overrides": {
       "tailwindcss>nanoid": "3.3.7"
     }

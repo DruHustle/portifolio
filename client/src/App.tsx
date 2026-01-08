@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import Home from "@/pages/Home";
-import ProjectDetail from "@/pages/ProjectDetail";
+import IMSOPDetail from "@/pages/IMSOPDetail";
 import SAPBTPAIHubDetail from "@/pages/SAPBTPAIHubDetail";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -12,7 +12,7 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/projects/imsop"} component={ProjectDetail} />
+      <Route path={"/projects/imsop"} component={IMSOPDetail} />
       <Route path={"/projects/sap-btp-ai-hub"} component={SAPBTPAIHubDetail} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

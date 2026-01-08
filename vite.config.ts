@@ -8,7 +8,7 @@ const plugins = [react(), tailwindcss(), jsxLocPlugin()];
 
 export default defineConfig({
   plugins,
-  base:  "./", // CRITICAL: Fix for GitHub Pages asset loading
+  base: "./", // Use relative paths for hash routing compatibility
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -26,10 +26,11 @@ export default defineConfig({
     port: 3000,
     strictPort: false,
     host: true,
-    allowedHosts: true, // Allow all hosts for preview
+    allowedHosts: true,
     fs: {
       strict: true,
       deny: ["**/.*"],
     },
   },
+
 });

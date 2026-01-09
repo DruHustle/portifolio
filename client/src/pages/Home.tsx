@@ -16,10 +16,15 @@ import {
   Target,
   TrendingUp,
 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { NavigationService } from "@/services/navigationService";
+import { analyticsService } from "@/services/analyticsService";
 
 export default function Home() {
+  useEffect(() => {
+    analyticsService.trackPageVisit("home");
+  }, []);
+
   const principles = useMemo(
     () => [
       {
@@ -229,7 +234,11 @@ export default function Home() {
                 <a href="#projects" onClick={(e) => scrollToSection(e, "projects")} className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all hover:shadow-lg hover:shadow-teal-500/50 hover:scale-105">
                   View Projects <ChevronRight className="w-4 h-4" />
                 </a>
-                <a href="resume/resume_download.pdf" className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-slate-900 transition-all hover:scale-105">
+                <a 
+                  href="resume/resume_download.pdf" 
+                  onClick={() => analyticsService.trackResumeDownload("resume_download.pdf")}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-slate-900 transition-all hover:scale-105"
+                >
                   Download Resume <ExternalLink className="w-4 h-4" />
                 </a>
               </div>

@@ -13,6 +13,7 @@ import SAPBTPAIHubDetail from "./pages/SAPBTPAIHubDetail";
 import IoTDetail from "./pages/IoTDetail";
 import Documentation from "./pages/Documentation";
 import IoTDocumentation from "./pages/IoTDocumentation";
+import Analytics from "./pages/Analytics";
 
 
 function AppRouter() {
@@ -20,6 +21,7 @@ function AppRouter() {
     <WouterRouter hook={useHashLocation}>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/analytics" component={Analytics} />
         <Route path="/projects/imsop" component={IMSOPDetail} />
         <Route path="/projects/imsop/documentation" component={Documentation} />
         <Route path="/projects/sap-btp-ai-hub" component={SAPBTPAIHubDetail} />

@@ -37,14 +37,77 @@ const VISITS_STORAGE_KEY = 'portfolio_page_visits';
 const DOWNLOADS_STORAGE_KEY = 'portfolio_resume_downloads';
 
 /**
+ * Safe localStorage wrapper that handles Safari private browsing mode
+ * and other edge cases where localStorage might be unavailable
+ */
+class SafeStorageProvider implements StorageProvider {
+  private isAvailable: boolean;
+  private fallbackData: Map<string, string> = new Map();
+
+  constructor() {
+    this.isAvailable = this.checkStorageAvailability();
+  }
+
+  private checkStorageAvailability(): boolean {
+    try {
+      const testKey = '__storage_test__';
+      localStorage.setItem(testKey, 'test');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  getItem(key: string): string | null {
+    try {
+      if (this.isAvailable) {
+        return localStorage.getItem(key);
+      }
+      return this.fallbackData.get(key) || null;
+    } catch (error) {
+      console.warn('Failed to get item from storage:', error);
+      return this.fallbackData.get(key) || null;
+    }
+  }
+
+  setItem(key: string, value: string): void {
+    try {
+      if (this.isAvailable) {
+        localStorage.setItem(key, value);
+      } else {
+        this.fallbackData.set(key, value);
+      }
+    } catch (error) {
+      console.warn('Failed to set item in storage:', error);
+      // Fallback to in-memory storage
+      this.fallbackData.set(key, value);
+    }
+  }
+
+  removeItem(key: string): void {
+    try {
+      if (this.isAvailable) {
+        localStorage.removeItem(key);
+      } else {
+        this.fallbackData.delete(key);
+      }
+    } catch (error) {
+      console.warn('Failed to remove item from storage:', error);
+      this.fallbackData.delete(key);
+    }
+  }
+}
+
+/**
  * Analytics Service - Manages all analytics data
  * Responsibility: Track and retrieve analytics data
  */
 export class AnalyticsService {
   private storageProvider: StorageProvider;
 
-  constructor(storageProvider: StorageProvider = localStorage) {
-    this.storageProvider = storageProvider;
+  constructor(storageProvider?: StorageProvider) {
+    this.storageProvider = storageProvider || new SafeStorageProvider();
   }
 
   /**
@@ -56,12 +119,13 @@ export class AnalyticsService {
       const visit: PageVisit = {
         page,
         timestamp: Date.now(),
-        referrer: document.referrer,
+        referrer: typeof document !== 'undefined' ? document.referrer : '',
       };
       visits.push(visit);
       this.storageProvider.setItem(VISITS_STORAGE_KEY, JSON.stringify(visits));
     } catch (error) {
-      console.error('Failed to track page visit:', error);
+      console.warn('Failed to track page visit:', error);
+      // Silently fail - don't break the application
     }
   }
 
@@ -78,7 +142,8 @@ export class AnalyticsService {
       downloads.push(download);
       this.storageProvider.setItem(DOWNLOADS_STORAGE_KEY, JSON.stringify(downloads));
     } catch (error) {
-      console.error('Failed to track resume download:', error);
+      console.warn('Failed to track resume download:', error);
+      // Silently fail - don't break the application
     }
   }
 
@@ -90,7 +155,7 @@ export class AnalyticsService {
       const data = this.storageProvider.getItem(VISITS_STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      console.error('Failed to retrieve page visits:', error);
+      console.warn('Failed to retrieve page visits:', error);
       return [];
     }
   }
@@ -103,7 +168,7 @@ export class AnalyticsService {
       const data = this.storageProvider.getItem(DOWNLOADS_STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      console.error('Failed to retrieve resume downloads:', error);
+      console.warn('Failed to retrieve resume downloads:', error);
       return [];
     }
   }
@@ -137,7 +202,7 @@ export class AnalyticsService {
       this.storageProvider.removeItem(VISITS_STORAGE_KEY);
       this.storageProvider.removeItem(DOWNLOADS_STORAGE_KEY);
     } catch (error) {
-      console.error('Failed to clear analytics data:', error);
+      console.warn('Failed to clear analytics data:', error);
     }
   }
 }

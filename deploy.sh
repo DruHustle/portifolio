@@ -30,8 +30,8 @@ REMOTE_URL=<LaTex>$(git remote get-url origin 2>/dev/null)
 if [ -z "$</LaTex>REMOTE_URL" ]; then
     echo "🔗 Configuring GitHub repository..."
     read -p "Enter your GitHub username: " USERNAME
-    git remote add origin "https://github.com/\<LaTex>$USERNAME/portifolio.git"
-    echo "✅ Remote origin added: https://github.com/\$</LaTex>USERNAME/portifolio.git"
+    git remote add origin "https://github.com/\<LaTex>$USERNAME/portfolio.git"
+    echo "✅ Remote origin added: https://github.com/\$</LaTex>USERNAME/portfolio.git"
 else
     echo "✅ Remote origin already configured: \$REMOTE_URL"
 fi
@@ -50,4 +50,4 @@ echo "NOTE: You may be asked for your GitHub credentials."
 pnpm deploy
 
 echo "✨ Deployment complete!"
-echo "🌐 Your website should be live at: https://\$(git remote get-url origin | sed -E 's/.*github.com[:\/](.*)\/portifolio.*/\1/').github.io/portifolio"
+echo "🌐 Your website should be live at: https://\$(git remote get-url origin | sed -E 's/.*github.com[:\/](.*)\/portfolio.*/\1/').github.io/portfolio"

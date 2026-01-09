@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { ArrowLeft, ExternalLink, Github, Server, Shield, Zap, BarChart3, Database, Globe, FileText } from "lucide-react";
 import { useMemo, useEffect } from "react";
 import { useNavigationState } from "@/hooks/useNavigationState";
+import { safeSessionStorage } from "@/lib/storage";
 
 export default function IMSOPDetail() {
   const { showBackButton } = useNavigationState();
@@ -95,7 +96,7 @@ export default function IMSOPDetail() {
               <a 
                 onClick={() => {
                   // Store intent to scroll to projects
-                  sessionStorage.setItem('scrollToProjects', 'true');
+                  safeSessionStorage.setItem('scrollToProjects', 'true');
                 }}
                 className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-cyan-400 transition-colors cursor-pointer"
               >

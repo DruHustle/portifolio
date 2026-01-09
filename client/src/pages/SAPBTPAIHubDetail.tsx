@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { ArrowLeft, ExternalLink, Github, BookOpen, Code2, Layers, Award, Zap, Smartphone } from "lucide-react";
 import { useMemo, useEffect } from "react";
 import { useNavigationState } from "@/hooks/useNavigationState";
+import { safeSessionStorage } from "@/lib/storage";
 
 export default function SAPBTPAIHubDetail() {
   const { showBackButton } = useNavigationState();
@@ -93,7 +94,7 @@ export default function SAPBTPAIHubDetail() {
               <a 
                 onClick={() => {
                   // Store intent to scroll to projects
-                  sessionStorage.setItem('scrollToProjects', 'true');
+                  safeSessionStorage.setItem('scrollToProjects', 'true');
                 }}
                 className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-blue-400 transition-colors cursor-pointer"
               >

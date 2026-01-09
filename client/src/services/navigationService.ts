@@ -4,6 +4,8 @@
  * Follows Open/Closed Principle - extensible for new navigation patterns
  */
 
+import { safeSessionStorage } from "@/lib/storage";
+
 const NAVIGATION_KEY = 'fromFeaturedProjects';
 
 export interface NavigationState {
@@ -20,10 +22,10 @@ export class NavigationService {
    */
   static setFromFeaturedProjects(): void {
     try {
-      sessionStorage.setItem(NAVIGATION_KEY, 'true');
+      safeSessionStorage.setItem(NAVIGATION_KEY, 'true');
     } catch (error) {
       // Silently fail if sessionStorage is not available
-      console.warn('SessionStorage not available:', error);
+      // console.warn('SessionStorage not available:', error);
     }
   }
 
@@ -33,10 +35,10 @@ export class NavigationService {
    */
   static isFromFeaturedProjects(): boolean {
     try {
-      return sessionStorage.getItem(NAVIGATION_KEY) === 'true';
+      return safeSessionStorage.getItem(NAVIGATION_KEY) === 'true';
     } catch (error) {
       // Silently fail if sessionStorage is not available
-      console.warn('SessionStorage not available:', error);
+      // console.warn('SessionStorage not available:', error);
       return false;
     }
   }
@@ -46,10 +48,10 @@ export class NavigationService {
    */
   static clearNavigationState(): void {
     try {
-      sessionStorage.removeItem(NAVIGATION_KEY);
+      safeSessionStorage.removeItem(NAVIGATION_KEY);
     } catch (error) {
       // Silently fail if sessionStorage is not available
-      console.warn('SessionStorage not available:', error);
+      // console.warn('SessionStorage not available:', error);
     }
   }
 

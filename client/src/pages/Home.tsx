@@ -19,6 +19,7 @@ import {
 import { useMemo, useEffect } from "react";
 import { NavigationService } from "@/services/navigationService";
 import { analyticsService } from "@/services/analyticsService";
+import { safeSessionStorage } from "@/lib/storage";
 
 export default function Home() {
   useEffect(() => {
@@ -162,9 +163,9 @@ export default function Home() {
   useMemo(() => {
     // Check if we need to scroll to projects after navigation
     if (typeof window !== 'undefined') {
-      const shouldScroll = sessionStorage.getItem('scrollToProjects');
+      const shouldScroll = safeSessionStorage.getItem('scrollToProjects');
       if (shouldScroll === 'true') {
-        sessionStorage.removeItem('scrollToProjects');
+        safeSessionStorage.removeItem('scrollToProjects');
         // Small delay to ensure DOM is ready
         setTimeout(() => {
           scrollToSection(null, 'projects');

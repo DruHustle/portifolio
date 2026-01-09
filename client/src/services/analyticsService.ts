@@ -66,7 +66,7 @@ class SafeStorageProvider implements StorageProvider {
       }
       return this.fallbackData.get(key) || null;
     } catch (error) {
-      console.warn('Failed to get item from storage:', error);
+      // console.warn('Failed to get item from storage:', error);
       return this.fallbackData.get(key) || null;
     }
   }
@@ -79,7 +79,7 @@ class SafeStorageProvider implements StorageProvider {
         this.fallbackData.set(key, value);
       }
     } catch (error) {
-      console.warn('Failed to set item in storage:', error);
+      // console.warn('Failed to set item in storage:', error);
       // Fallback to in-memory storage
       this.fallbackData.set(key, value);
     }
@@ -93,7 +93,7 @@ class SafeStorageProvider implements StorageProvider {
         this.fallbackData.delete(key);
       }
     } catch (error) {
-      console.warn('Failed to remove item from storage:', error);
+      // console.warn('Failed to remove item from storage:', error);
       this.fallbackData.delete(key);
     }
   }

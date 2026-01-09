@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { ArrowLeft, ExternalLink, Github, Cpu, Shield, Zap, BarChart3, Cloud, Globe, Database, FileText } from "lucide-react";
 import { useMemo, useEffect } from "react";
 import { useNavigationState } from "@/hooks/useNavigationState";
+import { safeSessionStorage } from "@/lib/storage";
 
 export default function IoTDetail() {
   const { showBackButton } = useNavigationState();
@@ -94,7 +95,7 @@ export default function IoTDetail() {
               <a 
                 onClick={() => {
                   // Store intent to scroll to projects
-                  sessionStorage.setItem('scrollToProjects', 'true');
+                  safeSessionStorage.setItem('scrollToProjects', 'true');
                 }}
                 className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-orange-400 transition-colors cursor-pointer"
               >

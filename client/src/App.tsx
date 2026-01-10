@@ -6,9 +6,6 @@ import { useHashLocation } from "wouter/use-hash-location";
 
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 
 import Home from "./pages/Home";
 import IMSOPDetail from "./pages/IMSOPDetail";
@@ -20,27 +17,6 @@ import Analytics from "./pages/Analytics";
 
 
 function AppRouter() {
-  const { isAuthenticated, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <WouterRouter hook={useHashLocation}>
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route component={Login} />
-        </Switch>
-      </WouterRouter>
-    );
-  }
   return (
     <WouterRouter hook={useHashLocation}>
       <Switch>
@@ -62,12 +38,10 @@ export default function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
-        <AuthProvider>
         <TooltipProvider>
           <Toaster position="top-center" richColors />
           <AppRouter />
         </TooltipProvider>
-        </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

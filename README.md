@@ -2,6 +2,12 @@
 
 A high-performance, responsive portfolio showcasing enterprise-scale solutions in supply chain, AI, and multi-cloud architecture.
 
+## 🚀 Quick Links
+
+- [Live Demo](https://druhustle.github.io/portfolio/) - View the live demo
+- [GitHub Repository](https://github.com/DruHustle/portfolio) - View source code
+- [Issues](https://github.com/DruHustle/portfolio/issues) - Report bugs or request features
+
 ## 🚀 Project Structure
 
 ```text

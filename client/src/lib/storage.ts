@@ -5,7 +5,9 @@
 
 const isStorageAvailable = (type: 'localStorage' | 'sessionStorage'): boolean => {
   try {
+    if (typeof window === 'undefined') return false;
     const storage = window[type];
+    if (!storage) return false;
     const x = '__storage_test__';
     storage.setItem(x, x);
     storage.removeItem(x);
@@ -26,25 +28,25 @@ const sessionMemoryStorage: Record<string, string> = {};
 
 export const safeLocalStorage = {
   getItem: (key: string): string | null => {
-    if (storageAvailable.local) {
-      try {
+    try {
+      if (storageAvailable.local && typeof localStorage !== 'undefined') {
         return localStorage.getItem(key);
-      } catch (e) {
-        return memoryStorage[key] || null;
       }
+    } catch (e) {
+      // Fallback to memory
     }
     return memoryStorage[key] || null;
   },
   setItem: (key: string, value: string): void => {
-    if (storageAvailable.local) {
-      try {
+    try {
+      if (storageAvailable.local && typeof localStorage !== 'undefined') {
         localStorage.setItem(key, value);
-      } catch (e) {
-        memoryStorage[key] = value;
+        return;
       }
-    } else {
-      memoryStorage[key] = value;
+    } catch (e) {
+      // Fallback to memory
     }
+    memoryStorage[key] = value;
   },
   removeItem: (key: string): void => {
     if (storageAvailable.local) {
@@ -76,25 +78,25 @@ export const safeLocalStorage = {
 
 export const safeSessionStorage = {
   getItem: (key: string): string | null => {
-    if (storageAvailable.session) {
-      try {
+    try {
+      if (storageAvailable.session && typeof sessionStorage !== 'undefined') {
         return sessionStorage.getItem(key);
-      } catch (e) {
-        return sessionMemoryStorage[key] || null;
       }
+    } catch (e) {
+      // Fallback to memory
     }
     return sessionMemoryStorage[key] || null;
   },
   setItem: (key: string, value: string): void => {
-    if (storageAvailable.session) {
-      try {
+    try {
+      if (storageAvailable.session && typeof sessionStorage !== 'undefined') {
         sessionStorage.setItem(key, value);
-      } catch (e) {
-        sessionMemoryStorage[key] = value;
+        return;
       }
-    } else {
-      sessionMemoryStorage[key] = value;
+    } catch (e) {
+      // Fallback to memory
     }
+    sessionMemoryStorage[key] = value;
   },
   removeItem: (key: string): void => {
     if (storageAvailable.session) {

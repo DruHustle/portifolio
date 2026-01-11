@@ -56,6 +56,7 @@ class SafeStorageProvider implements StorageProvider {
 
   private checkStorageAvailability(): boolean {
     try {
+      if (typeof window === 'undefined' || !window.localStorage) return false;
       const testKey = '__storage_test__';
       localStorage.setItem(testKey, 'test');
       localStorage.removeItem(testKey);

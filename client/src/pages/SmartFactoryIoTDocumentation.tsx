@@ -8,20 +8,20 @@ const docs = [
   {
     title: "Architecture Overview",
     description: "Detailed technical design, including system architecture, WebSocket implementation, and notification service design.",
-    mdPath: "/docs/iot/architecture.md",
-    pdfPath: "/docs/iot/architecture.pdf",
+    mdPath: "/docs/smartfactoryiot/architecture.md",
+    pdfPath: "/docs/smartfactoryiot/architecture.pdf",
   },
   {
     title: "Database Schema",
     description: "Comprehensive database design and entity relationship specifications for IoT data.",
-    mdPath: "/docs/iot/database-schema.md",
-    pdfPath: "/docs/iot/database-schema.pdf",
+    mdPath: "/docs/smartfactoryiot/database-schema.md",
+    pdfPath: "/docs/smartfactoryiot/database-schema.pdf",
   },
   {
     title: "API Flows",
     description: "Technical specification for REST APIs and WebSocket endpoints used for device management.",
-    mdPath: "/docs/iot/api-flows.md",
-    pdfPath: "/docs/iot/api-flows.pdf",
+    mdPath: "/docs/smartfactoryiot/api-flows.md",
+    pdfPath: "/docs/smartfactoryiot/api-flows.pdf",
   },
 ];
 

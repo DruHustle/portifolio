@@ -106,7 +106,7 @@ export default function SmartFactoryIoTDocumentation() {
           </p>
           <div className="bg-slate-900/50 rounded-2xl border border-slate-600/50 p-8 overflow-x-auto">
             <pre className="text-orange-400 font-mono text-sm leading-relaxed whitespace-pre-wrap break-words text-center">
-{`IoT Dashboard Architecture
+{`Smart Factory IoT Dashboard Architecture
 
 ┌─────────────────────────────────────────────────────────────┐
 │                    Frontend (React)                         │

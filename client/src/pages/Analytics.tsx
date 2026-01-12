@@ -52,13 +52,6 @@ export default function Analytics() {
       <header className="border-b border-slate-700/50 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
-            <a
-              href="/"
-              className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
-              title="Back to Home"
-            >
-              <ArrowLeft className="w-5 h-5 text-slate-400" />
-            </a>
             <div>
               <h1 className="text-3xl font-bold text-white">Analytics Dashboard</h1>
               <p className="text-slate-400 text-sm mt-1">Portfolio visits and resume downloads</p>

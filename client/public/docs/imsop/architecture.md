@@ -1,52 +1,48 @@
-# IMSOP - System Architecture
-
-## Overview
-
-IMSOP (Intelligent Multi-Cloud Supply Chain & Operations Platform) is an enterprise-grade supply chain management and operations platform. It provides comprehensive visibility, control, and optimization across multi-cloud environments and supply chain networks.
-
-## System Architecture Diagram
-
-```mermaid
-graph TB
+IMSOP - System Architecture
+Overview
+IMSOP (Intelligent Multi-Cloud Supply Chain & Operations Platform) is an enterprise-grade supply chain management and operations platform. It provides comprehensive visibility, control, and optimization across Azure-centric environments with optional multi-cloud support via Azure Arc, ensuring robustness, security, and high performance through containerization, IaC, and advanced monitoring.
+System Architecture Diagram
+mermaidgraph TB
     subgraph Client["🖥️ Client Layer"]
-        UI["React Dashboard<br/>Real-time Analytics"]
+        UI["React/Vite Dashboard<br/>Real-time Analytics"]
         Mobile["Mobile App<br/>Field Operations"]
-        Auth["Authentication<br/>OAuth 2.0 + JWT"]
+        Auth["Authentication<br/>Microsoft Entra ID + JWT"]
     end
     
     subgraph Gateway["🌐 API Gateway Layer"]
-        GraphQL["GraphQL API<br/>Flexible Queries"]
-        REST["REST API<br/>Standard Operations"]
-        WebSocket["WebSocket<br/>Real-time Events"]
+        GraphQL["GraphQL API<br/>Flexible Queries (HotChocolate)"]
+        REST["REST API<br/>Standard Operations (ASP.NET Core)"]
+        SignalR["SignalR<br/>Real-time Events"]
     end
     
     subgraph Server["⚙️ Backend Layer"]
-        Supply["Supply Chain<br/>Service"]
-        Ops["Operations<br/>Service"]
-        Analytics["Analytics<br/>Engine"]
-        Integration["Integration<br/>Service"]
+        Supply["Supply Chain<br/>Service (.NET Core)"]
+        Ops["Operations<br/>Service (.NET Core)"]
+        Analytics["Analytics<br/>Engine (ML.NET + Azure Functions)"]
+        Integration["Integration<br/>Service (.NET Core)"]
     end
     
     subgraph Data["💾 Data Layer"]
-        PrimaryDB["Primary Database<br/>PostgreSQL"]
-        Cache["Distributed Cache<br/>Redis"]
-        Search["Search Engine<br/>Elasticsearch"]
+        PrimaryDB["Primary Database<br/>Aiven PostgreSQL"]
+        Cache["Distributed Cache<br/>Aiven Redis"]
+        Search["Search Engine<br/>Aiven Elasticsearch"]
     end
     
-    subgraph Cloud["☁️ Multi-Cloud Layer"]
-        AWS["AWS Services<br/>Compute, Storage"]
-        Azure["Azure Services<br/>AI, Analytics"]
-        GCP["GCP Services<br/>BigQuery, ML"]
+    subgraph Cloud["☁️ Azure Cloud Layer"]
+        AzureApp["Azure App Services<br/>Compute, Hosting"]
+        AzureFunc["Azure Functions<br/>Serverless Processing"]
+        AzureStorage["Azure Blob Storage<br/>File Management"]
+        AzureVNet["Azure Virtual Networks<br/>Secure Networking"]
     end
     
     subgraph Services["🔧 Service Layer"]
-        Queue["Message Queue<br/>RabbitMQ/Kafka"]
-        Notifications["Notification<br/>Service"]
-        Reporting["Reporting<br/>Engine"]
-        ML["ML/AI<br/>Predictions"]
+        Queue["Message Queue<br/>Azure Service Bus"]
+        Notifications["Notification<br/>Service (Azure Logic Apps)"]
+        Reporting["Reporting<br/>Engine (Azure Functions)"]
+        ML["ML/AI<br/>Predictions (ML.NET)"]
     end
     
-    Client -->|HTTP/WebSocket| Gateway
+    Client -->|HTTP/SignalR| Gateway
     Mobile -->|REST/GraphQL| Gateway
     Gateway -->|Type-safe| Server
     Server -->|Query/Mutation| Data
@@ -60,260 +56,322 @@ graph TB
     style Data fill:#06b6d4,stroke:#0a0e27,color:#0a0e27,stroke-width:2px
     style Cloud fill:#ec4899,stroke:#0a0e27,color:#fff,stroke-width:2px
     style Services fill:#0ea5e9,stroke:#0a0e27,color:#fff,stroke-width:2px
-```
+Component Details
+Client Layer
 
-## Component Details
+React/Vite Dashboard: Comprehensive supply chain analytics and management, deployed on Vercel for fast static hosting with SSR support.
+Mobile App: Field operations and real-time updates (React Native integration).
+Authentication: Microsoft Entra ID (Azure AD) with JWT tokens and OAuth 2.0.
 
-### Client Layer
-- **React Dashboard**: Comprehensive supply chain analytics and management
-- **Mobile App**: Field operations and real-time updates
-- **Authentication**: OAuth 2.0 with JWT tokens
+API Gateway Layer
 
-### API Gateway Layer
-- **GraphQL API**: Flexible query language for complex data requirements
-- **REST API**: Standard CRUD operations and integrations
-- **WebSocket**: Real-time event streaming and notifications
+GraphQL API: Flexible query language using HotChocolate for complex data requirements.
+REST API: Standard CRUD operations with ASP.NET Core Web API, secured via Azure API Management.
+SignalR: Real-time event streaming and notifications for high-performance updates.
 
-### Backend Layer
-- **Supply Chain Service**: Procurement, inventory, logistics management
-- **Operations Service**: Workflow automation, task management
-- **Analytics Engine**: Predictive analytics and business intelligence
-- **Integration Service**: Third-party API integrations and data sync
+Backend Layer
 
-### Data Layer
-- **PostgreSQL Database**: Primary data storage with ACID compliance
-- **Redis Cache**: High-performance caching layer
-- **Elasticsearch**: Full-text search and log aggregation
+Supply Chain Service: Procurement, inventory, logistics management (DDD with SOLID principles).
+Operations Service: Workflow automation, task management (Async processing).
+Analytics Engine: Predictive analytics using ML.NET and Azure Functions.
+Integration Service: Third-party API integrations via Azure Logic Apps and Microsoft Graph API.
 
-### Multi-Cloud Layer
-- **AWS Services**: EC2, S3, Lambda, RDS
-- **Azure Services**: Cognitive Services, Machine Learning
-- **GCP Services**: BigQuery, Dataflow, AI Platform
+Data Layer
 
-### Service Layer
-- **Message Queue**: Asynchronous task processing
-- **Notification Service**: Email, SMS, push notifications
-- **Reporting Engine**: PDF generation, scheduled reports
-- **ML/AI**: Demand forecasting, anomaly detection
+Aiven PostgreSQL Database: Managed primary data storage with ACID compliance and auto-scaling.
+Aiven Redis Cache: High-performance caching layer for distributed sessions and data.
+Aiven Elasticsearch: Full-text search and log aggregation, integrated with Azure Monitor.
 
-## Data Flow
+Azure Cloud Layer
 
-### Supply Chain Order Flow
-```
-Order Creation → Validation → Inventory Check
+Azure App Services: Hosting for .NET Core microservices.
+Azure Functions: Serverless compute for event-driven tasks.
+Azure Blob Storage: Secure file storage with encryption.
+Azure Virtual Networks: Isolated networking with RBAC and Managed Identities.
+
+Service Layer
+
+Message Queue: Azure Service Bus for asynchronous task processing.
+Notification Service: Azure Logic Apps for email/SMS/push notifications.
+Reporting Engine: Azure Functions for PDF generation and scheduled reports.
+ML/AI: ML.NET models deployed in Azure Functions for predictions.
+
+Data Flow
+Supply Chain Order Flow
+textOrder Creation → Validation (FluentValidation) → Inventory Check (EF Core)
               ↓
-         Queue Processing
+         Queue Processing (Azure Service Bus)
               ↓
     Supplier Notification → Fulfillment
               ↓
-         Shipment Tracking
+         Shipment Tracking (SignalR)
               ↓
-    Delivery & Analytics Update
-```
-
-### Real-time Analytics Flow
-```
-Data Sources → Collection → Processing
+    Delivery & Analytics Update (Azure Monitor)
+Real-time Analytics Flow
+textData Sources → Collection (.NET Worker) → Processing (Azure Functions)
                            ↓
-                    Cache Update
+                    Cache Update (Aiven Redis)
                            ↓
-                    Dashboard Update
+                    Dashboard Update (SignalR)
                            ↓
-                    Alert Generation
-```
-
-### Multi-Cloud Integration Flow
-```
-Local Request → Cloud Router → Cloud Selection
+                    Alert Generation (Azure Monitor)
+Multi-Cloud Integration Flow
+textLocal Request → Cloud Router (.NET Core) → Azure Selection (via Azure Arc)
                               ↓
-                         Cloud API Call
+                         Azure API Call (SDK)
                               ↓
-                         Result Aggregation
+                         Result Aggregation (Azure Functions)
                               ↓
                          Response to Client
-```
+Technology Stack
 
-## Technology Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Frontend | React 19 + TypeScript | UI Framework |
-| Frontend | GraphQL Client | Data fetching |
-| Frontend | Tailwind CSS | Styling |
-| Backend | Node.js | Runtime |
-| Backend | Express.js | Web Framework |
-| Backend | GraphQL | API Layer |
-| Database | PostgreSQL | Primary DB |
-| Cache | Redis | Performance |
-| Search | Elasticsearch | Full-text search |
-| Cloud | AWS/Azure/GCP | Infrastructure |
-| Queue | RabbitMQ/Kafka | Message Queue |
-| Auth | OAuth 2.0 + JWT | Authentication |
 
-## Key Features
 
-### 1. Supply Chain Management
-- Procurement automation
-- Inventory optimization
-- Supplier management
-- Purchase order tracking
 
-### 2. Operations Management
-- Workflow automation
-- Task management
-- Resource allocation
-- Performance tracking
 
-### 3. Analytics & Insights
-- Real-time dashboards
-- Predictive analytics
-- Anomaly detection
-- Custom reports
 
-### 4. Multi-Cloud Support
-- AWS integration
-- Azure integration
-- GCP integration
-- Hybrid cloud management
 
-### 5. Integration Capabilities
-- ERP system integration
-- Third-party API support
-- Data synchronization
-- Webhook support
 
-## Security Architecture
 
-### Authentication
-- OAuth 2.0 for third-party integrations
-- JWT for API authentication
-- Multi-factor authentication support
-- Session management
 
-### Authorization
-- Role-based access control (RBAC)
-- Attribute-based access control (ABAC)
-- Resource-level permissions
-- Audit logging
 
-### Data Protection
-- End-to-end encryption
-- Database encryption at rest
-- TLS/SSL in transit
-- Data anonymization
 
-## Scalability Considerations
 
-### Horizontal Scaling
-- Stateless microservices
-- Load balancing
-- Database replication
-- Cache distribution
 
-### Performance Optimization
-- Query optimization
-- Caching strategies
-- Batch processing
-- Asynchronous operations
 
-### Monitoring & Observability
-- Centralized logging
-- Application performance monitoring
-- Error tracking
-- Health checks
 
-## Deployment Architecture
 
-```
-┌─────────────────────────────────────┐
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LayerTechnologyPurposeFrontendReact/Vite + TypeScriptUI Framework, deployed on VercelFrontendGraphQL Client (Apollo)Data fetchingFrontendTailwind CSSStylingBackend.NET 8 (ASP.NET Core)Runtime and Web FrameworkBackendEntity Framework CoreORM for Database AccessBackendHotChocolateGraphQL LayerDatabaseAiven PostgreSQLPrimary DBCacheAiven RedisPerformanceSearchAiven ElasticsearchFull-text searchCloudAzure (App Services, Functions, etc.)InfrastructureQueueAzure Service BusMessage QueueAuthMicrosoft Entra ID + JWTAuthentication
+Key Features
+1. Supply Chain Management
+
+Procurement automation
+Inventory optimization
+Supplier management
+Purchase order tracking
+
+2. Operations Management
+
+Workflow automation
+Task management
+Resource allocation
+Performance tracking
+
+3. Analytics & Insights
+
+Real-time dashboards
+Predictive analytics
+Anomaly detection
+Custom reports
+
+4. Azure-Centric Support
+
+Azure App Services integration
+Azure Functions for serverless
+Azure Arc for hybrid/multi-cloud
+Secure networking with Virtual Networks
+
+5. Integration Capabilities
+
+ERP system integration via Azure Logic Apps
+Third-party API support (OAuth 2.0)
+Data synchronization with Microsoft Graph API
+Webhook support
+
+Security Architecture
+Authentication
+
+Microsoft Entra ID for third-party integrations
+JWT for API authentication
+Multi-factor authentication support
+Session management with Managed Identities
+
+Authorization
+
+Role-based access control (RBAC) via Azure
+Attribute-based access control (ABAC)
+Resource-level permissions
+Audit logging with Azure Monitor
+
+Data Protection
+
+End-to-end encryption (Azure Key Vault)
+Database encryption at rest (Aiven)
+TLS/SSL in transit
+Data anonymization and secrets management
+
+Scalability Considerations
+Horizontal Scaling
+
+Stateless microservices in Docker/Kubernetes
+Load balancing via Azure App Service
+Database replication (Aiven auto-scaling)
+Cache distribution (Aiven Redis Cluster)
+
+Performance Optimization
+
+Query optimization with EF Core
+Caching strategies (IDistributedCache)
+Batch processing in Azure Functions
+Asynchronous operations with async/await in .NET
+
+Monitoring & Observability
+
+Azure Monitor and Application Insights for logging
+Log Analytics for centralized logs
+Alerting and performance optimization
+Root cause analysis with troubleshooting tools
+
+Deployment Architecture
+text┌─────────────────────────────────────┐
 │     Production Environment          │
 ├─────────────────────────────────────┤
-│  Load Balancer (Multi-region)       │
+│  Vercel (Frontend: React/Vite)      │
 │         ↓                           │
 │  ┌─────────────────────────────┐   │
-│  │  Kubernetes Cluster         │   │
-│  │  - API Services             │   │
-│  │  - Worker Nodes             │   │
-│  │  - Service Mesh (Istio)     │   │
+│  │  Azure Kubernetes Service   │   │
+│  │  - .NET Microservices       │   │
+│  │  - Docker Containers        │   │
+│  │  - Service Mesh             │   │
 │  └─────────────────────────────┘   │
 │         ↓                           │
 │  ┌─────────────────────────────┐   │
-│  │  Data Layer                 │   │
-│  │  - PostgreSQL (Primary)     │   │
-│  │  - PostgreSQL (Replica)     │   │
+│  │  Data Layer (Aiven)         │   │
+│  │  - PostgreSQL (Managed)     │   │
 │  │  - Redis Cluster            │   │
 │  │  - Elasticsearch Cluster    │   │
 │  └─────────────────────────────┘   │
 │         ↓                           │
 │  ┌─────────────────────────────┐   │
-│  │  Multi-Cloud Services       │   │
-│  │  - AWS                      │   │
-│  │  - Azure                    │   │
-│  │  - GCP                      │   │
+│  │  Azure Services             │   │
+│  │  - App Services             │   │
+│  │  - Functions                │   │
+│  │  - Service Bus              │   │
 │  └─────────────────────────────┘   │
 └─────────────────────────────────────┘
-```
+Deployment Tools:
 
-## SOLID Principles Implementation
+IaC: Azure Bicep/ARM Templates for infrastructure provisioning.
+CI/CD: Azure DevOps Pipelines or GitHub Actions for automated builds, tests (TDD), and deployments.
+Static Assets: GitHub Pages for documentation/hosting static parts if needed, Render for backend preview environments.
 
-### Single Responsibility
-- Each service handles one domain
-- Clear separation of concerns
-- Focused business logic
+SOLID Principles Implementation
+Single Responsibility
 
-### Open/Closed
-- Extensible through plugins
-- New integrations without modification
-- Interface-based design
+Each service handles one domain
+Clear separation of concerns
+Focused business logic
 
-### Liskov Substitution
-- Consistent service interfaces
-- Predictable behavior
-- Type-safe operations
+Open/Closed
 
-### Interface Segregation
-- Minimal required dependencies
-- Focused service contracts
-- Specific API endpoints
+Extensible through plugins
+New integrations without modification
+Interface-based design
 
-### Dependency Inversion
-- Services depend on abstractions
-- Dependency injection pattern
-- Plugin architecture
+Liskov Substitution
 
-## Performance Metrics
+Consistent service interfaces
+Predictable behavior
+Type-safe operations
 
-- **API Response Time**: < 200ms (p95)
-- **GraphQL Query Time**: < 500ms (p95)
-- **Real-time Event Latency**: < 100ms
-- **Dashboard Load Time**: < 2s
-- **Database Query Time**: < 50ms (p95)
-- **Cache Hit Rate**: > 85%
-- **System Availability**: > 99.9%
+Interface Segregation
 
-## Future Enhancements
+Minimal required dependencies
+Focused service contracts
+Specific API endpoints
 
-1. **Advanced Analytics**
-   - Machine learning models
-   - Predictive maintenance
-   - Demand forecasting
+Dependency Inversion
 
-2. **Blockchain Integration**
-   - Supply chain transparency
-   - Smart contracts
-   - Immutable audit trail
+Services depend on abstractions
+Dependency injection pattern
+Plugin architecture
 
-3. **IoT Integration**
-   - Real-time tracking
-   - Sensor data collection
-   - Automated alerts
+Performance Metrics
 
-4. **Advanced Automation**
-   - RPA integration
-   - Workflow optimization
-   - Intelligent routing
+API Response Time: < 200ms (p95)
+GraphQL Query Time: < 500ms (p95)
+Real-time Event Latency: < 100ms
+Dashboard Load Time: < 2s
+Database Query Time: < 50ms (p95)
+Cache Hit Rate: > 85%
+System Availability: > 99.9%
 
-5. **Sustainability**
-   - Carbon footprint tracking
-   - Green logistics optimization
-   - ESG reporting
+Future Enhancements
+
+Advanced Analytics
+Machine learning models
+Predictive maintenance
+Demand forecasting
+
+Blockchain Integration
+Supply chain transparency
+Smart contracts
+Immutable audit trail
+
+IoT Integration
+Real-time tracking
+Sensor data collection
+Automated alerts
+
+Advanced Automation
+RPA integration
+Workflow optimization
+Intelligent routing
+
+Sustainability
+Carbon footprint tracking
+Green logistics optimization
+ESG reporting

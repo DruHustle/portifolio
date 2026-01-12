@@ -1,9 +1,6 @@
-# IMSOP - Database Schema
-
-## Entity Relationship Diagram
-
-```mermaid
-erDiagram
+IMSOP - Database Schema
+Entity Relationship Diagram
+mermaiderDiagram
     ORGANIZATIONS ||--o{ USERS : "has"
     ORGANIZATIONS ||--o{ SUPPLIERS : "manages"
     ORGANIZATIONS ||--o{ WAREHOUSES : "operates"
@@ -36,15 +33,10 @@ erDiagram
     INVENTORY ||--o{ INVENTORY_TRANSACTIONS : "has"
     
     ANALYTICS_EVENTS ||--o{ ANALYTICS_METRICS : "contains"
-```
-
-## Core Tables
-
-### Organizations
+Core Tables
+Organizations
 Central organization management and multi-tenancy support.
-
-```sql
-CREATE TABLE organizations (
+SQLCREATE TABLE organizations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL UNIQUE,
     description TEXT,
@@ -63,13 +55,9 @@ CREATE TABLE organizations (
     INDEX idx_subscription_tier (subscription_tier),
     UNIQUE KEY unique_active_org (name, deleted_at)
 );
-```
-
-### Users
+Users
 User accounts and authentication.
-
-```sql
-CREATE TABLE users (
+SQLCREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -92,13 +80,9 @@ CREATE TABLE users (
     INDEX idx_status (status),
     UNIQUE KEY unique_active_user (email, deleted_at)
 );
-```
-
-### Roles & Permissions
+Roles & Permissions
 Role-based access control.
-
-```sql
-CREATE TABLE roles (
+SQLCREATE TABLE roles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -143,13 +127,9 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id),
     UNIQUE KEY unique_user_role (user_id, role_id)
 );
-```
-
-### Suppliers
+Suppliers
 Supplier management and tracking.
-
-```sql
-CREATE TABLE suppliers (
+SQLCREATE TABLE suppliers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -172,13 +152,9 @@ CREATE TABLE suppliers (
     INDEX idx_status (status),
     INDEX idx_rating (rating)
 );
-```
-
-### Products
+Products
 Product catalog and specifications.
-
-```sql
-CREATE TABLE products (
+SQLCREATE TABLE products (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     sku VARCHAR(100) NOT NULL,
@@ -200,13 +176,9 @@ CREATE TABLE products (
     INDEX idx_category (category),
     INDEX idx_status (status)
 );
-```
-
-### Warehouses & Inventory
+Warehouses & Inventory
 Warehouse locations and inventory tracking.
-
-```sql
-CREATE TABLE warehouses (
+SQLCREATE TABLE warehouses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -259,13 +231,9 @@ CREATE TABLE inventory_transactions (
     INDEX idx_inventory_id (inventory_id),
     INDEX idx_created_at (created_at)
 );
-```
-
-### Purchase Orders
+Purchase Orders
 Purchase order management and tracking.
-
-```sql
-CREATE TABLE purchase_orders (
+SQLCREATE TABLE purchase_orders (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     supplier_id UUID NOT NULL,
@@ -304,13 +272,9 @@ CREATE TABLE purchase_order_items (
     FOREIGN KEY (product_id) REFERENCES products(id),
     INDEX idx_purchase_order_id (purchase_order_id)
 );
-```
-
-### Shipments & Tracking
+Shipments & Tracking
 Shipment management and real-time tracking.
-
-```sql
-CREATE TABLE shipments (
+SQLCREATE TABLE shipments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     reference_id VARCHAR(100),
@@ -347,13 +311,9 @@ CREATE TABLE shipment_tracking (
     INDEX idx_shipment_id (shipment_id),
     INDEX idx_timestamp (timestamp)
 );
-```
-
-### Analytics & Metrics
+Analytics & Metrics
 Analytics and performance metrics.
-
-```sql
-CREATE TABLE analytics_events (
+SQLCREATE TABLE analytics_events (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     event_type VARCHAR(100) NOT NULL,
@@ -384,101 +344,95 @@ CREATE TABLE analytics_metrics (
     INDEX idx_metric_name (metric_name),
     INDEX idx_dimension_date (dimension_date)
 );
-```
+Indexing Strategy
+Primary Indexes
 
-## Indexing Strategy
+All primary keys indexed automatically
+Foreign keys indexed for join performance
+Organization ID indexed for multi-tenancy filtering
 
-### Primary Indexes
-- All primary keys indexed automatically
-- Foreign keys indexed for join performance
-- Organization ID indexed for multi-tenancy filtering
+Performance Indexes
 
-### Performance Indexes
-- Status fields indexed for filtering
-- Date fields indexed for range queries
-- Frequently searched fields indexed
+Status fields indexed for filtering
+Date fields indexed for range queries
+Frequently searched fields indexed
 
-### Composite Indexes
-- (organization_id, status) for filtered queries
-- (warehouse_id, product_id) for inventory lookups
-- (created_at, organization_id) for time-series queries
+Composite Indexes
 
-## Query Patterns
+(organization_id, status) for filtered queries
+(warehouse_id, product_id) for inventory lookups
+(created_at, organization_id) for time-series queries
 
-### Get Inventory by Product
-```sql
-SELECT i.*, p.name, w.name as warehouse_name
+Query Patterns
+Get Inventory by Product
+SQLSELECT i.*, p.name, w.name as warehouse_name
 FROM inventory i
 JOIN products p ON i.product_id = p.id
 JOIN warehouses w ON i.warehouse_id = w.id
 WHERE p.organization_id = ? AND p.sku = ?
 ORDER BY w.name;
-```
-
-### Get Purchase Order Status
-```sql
-SELECT po.*, GROUP_CONCAT(p.name) as products
+Get Purchase Order Status
+SQLSELECT po.*, GROUP_CONCAT(p.name) as products
 FROM purchase_orders po
 LEFT JOIN purchase_order_items poi ON po.id = poi.purchase_order_id
 LEFT JOIN products p ON poi.product_id = p.id
 WHERE po.organization_id = ? AND po.po_number = ?
 GROUP BY po.id;
-```
-
-### Real-time Shipment Tracking
-```sql
-SELECT s.*, st.location, st.latitude, st.longitude, st.timestamp
+Real-time Shipment Tracking
+SQLSELECT s.*, st.location, st.latitude, st.longitude, st.timestamp
 FROM shipments s
 LEFT JOIN shipment_tracking st ON s.id = st.shipment_id
 WHERE s.organization_id = ? AND s.tracking_number = ?
 ORDER BY st.timestamp DESC
 LIMIT 1;
-```
+Performance Optimization
+Query Optimization
 
-## Performance Optimization
+Use EXPLAIN ANALYZE for query planning
+Avoid SELECT * queries
+Use appropriate JOIN types
+Implement pagination for large result sets
 
-### Query Optimization
-- Use EXPLAIN ANALYZE for query planning
-- Avoid SELECT * queries
-- Use appropriate JOIN types
-- Implement pagination for large result sets
+Caching Strategy
 
-### Caching Strategy
-- Cache frequently accessed products
-- Cache organization settings
-- Cache user permissions
-- Cache warehouse locations
+Cache frequently accessed products
+Cache organization settings
+Cache user permissions
+Cache warehouse locations
 
-### Data Retention
-- Archive old purchase orders (>2 years)
-- Archive old shipment tracking (>1 year)
-- Archive old analytics events (>6 months)
-- Keep current inventory indefinitely
+Data Retention
 
-## Backup & Recovery
+Archive old purchase orders (>2 years)
+Archive old shipment tracking (>1 year)
+Archive old analytics events (>6 months)
+Keep current inventory indefinitely
 
-### Backup Strategy
-- Daily full backups
-- Hourly incremental backups
-- Point-in-time recovery enabled
-- Backup retention: 30 days
+Backup & Recovery
+Backup Strategy
 
-### Recovery Procedures
-- Test recovery procedures monthly
-- Document recovery time objectives (RTO)
-- Document recovery point objectives (RPO)
-- Maintain backup verification logs
+Daily full backups (Aiven automated)
+Hourly incremental backups
+Point-in-time recovery enabled
+Backup retention: 30 days
 
-## Security Considerations
+Recovery Procedures
 
-### Data Protection
-- Encrypt sensitive data at rest
-- Use TLS for data in transit
-- Hash passwords with bcrypt
-- Mask PII in logs
+Test recovery procedures monthly
+Document recovery time objectives (RTO)
+Document recovery point objectives (RPO)
+Maintain backup verification logs
 
-### Access Control
-- Row-level security for multi-tenancy
-- Column-level encryption for sensitive data
-- Audit trail for all modifications
-- Regular security audits
+Security Considerations
+Data Protection
+
+Encrypt sensitive data at rest (Aiven PostgreSQL encryption)
+Use TLS for data in transit
+Hash passwords with bcrypt
+Mask PII in logs
+
+Access Control
+
+Row-level security for multi-tenancy
+Column-level encryption for sensitive data
+Audit trail for all modifications
+Regular security audits

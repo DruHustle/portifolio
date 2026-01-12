@@ -1,286 +1,387 @@
-# Smart Factory IoT - System Architecture
-
-## Overview
-
-The Smart Factory IoT platform is a comprehensive real-time industrial monitoring and control system built with modern web technologies. It provides real-time device monitoring, alert management, and analytics for manufacturing environments.
-
-## System Architecture Diagram
-
-```mermaid
-graph TB
+Smart Factory IoT - System Architecture
+Overview
+The Smart Factory IoT platform is a comprehensive real-time industrial monitoring and control system. It features a React (Vite) frontend for interactive dashboards, a .NET backend for robust API and business logic, and integration with Azure IoT Hub for device connectivity. The architecture emphasizes robustness through microservices and containerization, security via Microsoft Entra ID and RBAC, extensibility using DDD and SOLID principles, and high performance with caching, asynchronous processing, and optimized queries.
+System Architecture Diagram
+mermaidgraph TB
     subgraph Client["🖥️ Client Layer"]
-        UI["React Dashboard<br/>Real-time UI Updates"]
-        Auth["Authentication<br/>JWT Tokens"]
+        UI["React (Vite) Dashboard<br/>Real-time UI Updates"]
+        Auth["Authentication<br/>OAuth 2.0 Tokens"]
     end
     
     subgraph Network["🌐 Communication Layer"]
-        REST["REST API<br/>Device Management"]
-        WS["WebSocket<br/>Real-time Streaming"]
+        REST["REST API<br/>Device Management (ASP.NET Core)"]
+        WS["SignalR<br/>Real-time Streaming"]
+        APIM["Azure API Management<br/>Gateway & Rate Limiting"]
     end
     
     subgraph Server["⚙️ Backend Layer"]
-        Router["TRPC Router<br/>Type-safe API"]
-        Auth_Service["Authentication<br/>Service"]
-        Device_Mgmt["Device<br/>Management"]
-        Analytics["Analytics<br/>Engine"]
+        Router["ASP.NET Controllers<br/>Type-safe API (Swagger)"]
+        Auth_Service["Authentication<br/>Service (Entra ID)"]
+        Device_Mgmt["Device<br/>Management (DDD)"]
+        Analytics["Analytics<br/>Engine (C#)"]
     end
     
     subgraph Data["💾 Data Layer"]
-        DB["MySQL Database<br/>Persistent Storage"]
-        Cache["In-Memory Cache<br/>Performance"]
+        DB["Aiven MySQL<br/>Persistent Storage (Managed)"]
+        Cache["Azure Redis Cache<br/>Performance"]
     end
     
     subgraph Services["🔧 Service Layer"]
-        Notifications["Notification<br/>Service"]
+        Notifications["Azure Logic Apps<br/>Notifications"]
         Device_Group["Device<br/>Grouping"]
-        OTA["OTA Update<br/>Manager"]
+        OTA["OTA Update<br/>Manager (IoT Hub)"]
+        Functions["Azure Functions<br/>Async Tasks"]
     end
     
-    Client -->|HTTP/WS| Network
-    Network -->|Type-safe| Server
-    Server -->|Query/Mutation| Data
-    Server -->|Async Tasks| Services
+    subgraph IoT["📡 IoT Layer"]
+        Hub["Azure IoT Hub<br/>Device Connectivity"]
+        Devices["IoT Devices<br/>Telemetry & C2D"]
+    end
+    
+    subgraph Infra["🏗️ Infrastructure"]
+        K8s["AKS (Kubernetes)<br/>Orchestration"]
+        Portainer["Portainer<br/>K8s Management"]
+        Docker["Docker Containers<br/>Microservices"]
+    end
+    
+    Client -->|HTTPS/WS| Network
+    Network -->|Secure Calls| Server
+    Server -->|EF Core| Data
+    Server -->|Triggers| Services
     Services -->|Alerts| Notifications
+    IoT -->|MQTT/AMQP| Hub
+    Hub -->|Routing| Server
+    Infra -->|Hosts| Server
+    Infra -->|Provisions| Data
+    Infra -->|Deploys| Client
     
     style Client fill:#00d9ff,stroke:#0a0e27,color:#0a0e27,stroke-width:2px
     style Network fill:#00f0d9,stroke:#0a0e27,color:#0a0e27,stroke-width:2px
     style Server fill:#7c3aed,stroke:#0a0e27,color:#fff,stroke-width:2px
     style Data fill:#06b6d4,stroke:#0a0e27,color:#0a0e27,stroke-width:2px
     style Services fill:#0ea5e9,stroke:#0a0e27,color:#fff,stroke-width:2px
-```
+    style IoT fill:#f97316,stroke:#0a0e27,color:#fff,stroke-width:2px
+    style Infra fill:#a855f7,stroke:#0a0e27,color:#fff,stroke-width:2px
+Component Details
+Client Layer
 
-## Component Details
+React (Vite) Dashboard: Interactive UI for real-time monitoring, built with Vite for fast development and bundling. Deployed to Vercel for serverless hosting and automatic scaling.
+Authentication: OAuth 2.0 with Microsoft Entra ID for secure token-based auth.
+State Management: React Context + TanStack Query for data fetching.
 
-### Client Layer
-- **React Dashboard**: Interactive UI for real-time monitoring
-- **Authentication**: JWT-based secure authentication
-- **State Management**: React Context + TRPC Query Client
+Communication Layer
 
-### Communication Layer
-- **REST API**: Device CRUD operations, configuration
-- **WebSocket**: Real-time sensor data streaming
-- **TRPC**: Type-safe RPC framework for frontend-backend communication
+REST API: Device CRUD operations, configuration via ASP.NET Core Web API.
+SignalR: Real-time sensor data streaming integrated with Azure SignalR Service for scalability.
+Azure API Management: Gateway for API versioning, rate limiting, and security policies.
 
-### Backend Layer
-- **TRPC Router**: Centralized API endpoint management
-- **Authentication Service**: JWT token validation and user management
-- **Device Management**: CRUD operations and device grouping
-- **Analytics Engine**: OEE calculations and reporting
+Backend Layer
 
-### Data Layer
-- **MySQL Database**: Persistent storage for all entities
-- **In-Memory Cache**: Performance optimization for frequently accessed data
+ASP.NET Controllers: Centralized API endpoint management with OpenAPI/Swagger for documentation.
+Authentication Service: Entra ID integration with JWT validation.
+Device Management: CRUD operations and device grouping using Domain-Driven Design (DDD) aggregates and repositories.
+Analytics Engine: OEE calculations and reporting in C#.
 
-### Service Layer
-- **Notification Service**: Email/SMS alerts for critical events
-- **Device Grouping**: Batch operations and analytics aggregation
-- **OTA Update Manager**: Firmware update distribution and tracking
+Data Layer
 
-## Data Flow
+Aiven MySQL: Managed MySQL database for persistent storage, provisioned via Terraform for cross-cloud compatibility.
+Azure Redis Cache: In-memory caching for high-performance reads.
 
-### Real-time Monitoring Flow
-```
-Device → WebSocket → Backend → Database
-                  ↓
-              Dashboard ← Real-time Updates
-```
+Service Layer
 
-### Alert Flow
-```
-Sensor Reading → Threshold Check → Alert Generated
-                                 ↓
-                        Notification Service
-                                 ↓
-                        User Notification
-```
+Azure Logic Apps: Workflow automation for notifications (Email/SMS via Microsoft Graph API).
+Device Grouping: Batch operations and analytics aggregation.
+OTA Update Manager: Firmware updates via Azure IoT Hub direct methods.
+Azure Functions: Serverless async tasks for data processing, triggered by IoT Hub or queues.
 
-### Device Management Flow
-```
-User Action → REST API → Backend Service
-                          ↓
-                      Database Update
-                          ↓
-                      Response to Client
-```
+IoT Layer
 
-## Technology Stack
+Azure IoT Hub: Central hub for device registration, telemetry ingestion (D2C), commands (C2D), and twins for metadata sync.
+IoT Devices: Connect via MQTT/AMQP, with SDKs for secure communication.
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Frontend | React 19 | UI Framework |
-| Frontend | TypeScript | Type Safety |
-| Frontend | Tailwind CSS | Styling |
-| Frontend | TRPC Client | Type-safe API |
-| Backend | Node.js | Runtime |
-| Backend | Express.js | Web Framework |
-| Backend | TRPC | RPC Framework |
-| Database | MySQL | Data Storage |
-| Real-time | WebSocket | Live Updates |
-| Auth | JWT | Token-based Auth |
+Infrastructure Layer
 
-## Key Features
+Docker: Containerization of .NET backend microservices for portability.
+Kubernetes (AKS): Orchestration for backend services, ensuring high availability and auto-scaling.
+Portainer: Web-based management for Kubernetes clusters, simplifying operations.
 
-### 1. Real-time Monitoring
-- Live device status updates via WebSocket
-- Sensor data streaming with minimal latency
-- Automatic reconnection handling
+Data Flow
+Real-time Monitoring Flow
+textDevice → Azure IoT Hub (Telemetry) → Azure Function/ASP.NET → Aiven MySQL
+                                                ↓
+                                            React Dashboard ← SignalR Updates
+Alert Flow
+textSensor Reading (IoT Hub) → Threshold Check (.NET) → Alert Generated
+                                                 ↓
+                                        Azure Logic Apps
+                                                 ↓
+                                        User Notification (Graph API)
+Device Management Flow
+textUser Action (React) → REST API (APIM) → .NET Service
+                                        ↓
+                                    Aiven MySQL Update (EF Core)
+                                        ↓
+                                    Response to Client
+Technology Stack
 
-### 2. Alert Management
-- Threshold-based alerts
-- Multiple severity levels (critical, warning, info)
-- Alert acknowledgment and resolution tracking
+Layer,Technology,Purpose
+Frontend,React 19 (Vite),UI Framework & Bundling
+Frontend,TypeScript,Type Safety
+Frontend,Tailwind CSS,Styling
+Frontend,TanStack Query,Data Fetching
+Backend,.NET 8 (ASP.NET Core),Runtime & Web Framework
+Backend,Entity Framework Core,ORM for MySQL
+Backend,SignalR,Real-time
+Database,Aiven MySQL,Managed DB
+IoT,Azure IoT Hub,Device Connectivity
+Infra,Docker/Kubernetes (AKS),Containerization & Orchestration
+Infra,Portainer,K8s Management
+IaC,Azure Bicep/Terraform,Resource Provisioning
+CI/CD,GitHub Actions,Automation
+Monitoring,Azure Monitor/App Insights,Logging & Alerts
+Security,Microsoft Entra ID/Key Vault,Auth & Secrets
+Deployment,"Vercel (Frontend), Render (Backend Fallback)",Hosting
 
-### 3. Device Management
-- CRUD operations for devices
-- Device grouping and batch operations
-- Device health monitoring
 
-### 4. Analytics
-- OEE (Overall Equipment Effectiveness) calculation
-- Historical data analysis
-- Trend reporting
 
-### 5. Firmware Management
-- OTA (Over-The-Air) update distribution
-- Update status tracking
-- Rollback capability
 
-## Security Architecture
 
-### Authentication
-- JWT-based token authentication
-- Secure password hashing with bcryptjs
-- Token refresh mechanism
 
-### Authorization
-- Role-based access control (RBAC)
-- User, Operator, Admin roles
-- Resource-level permissions
 
-### Data Protection
-- HTTPS/TLS encryption in transit
-- Database encryption at rest
-- Input validation and sanitization
 
-## Scalability Considerations
 
-### Horizontal Scaling
-- Stateless backend design
-- Database connection pooling
-- Load balancing ready
 
-### Performance Optimization
-- Query optimization with indexes
-- Caching layer for frequently accessed data
-- Batch operations for bulk updates
 
-### Monitoring & Observability
-- Comprehensive logging
-- Error tracking
-- Performance metrics
 
-## Deployment Architecture
 
-```
-┌─────────────────────────────────────┐
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LayerTechnologyPurposeFrontendReact 19 (Vite)UI Framework & BundlingFrontendTypeScriptType SafetyFrontendTailwind CSSStylingFrontendTanStack QueryData FetchingBackend.NET 8 (ASP.NET Core)Runtime & Web FrameworkBackendEntity Framework CoreORM for MySQLBackendSignalRReal-timeDatabaseAiven MySQLManaged DBIoTAzure IoT HubDevice ConnectivityInfraDocker/Kubernetes (AKS)Containerization & OrchestrationInfraPortainerK8s ManagementIaCAzure Bicep/TerraformResource ProvisioningCI/CDGitHub ActionsAutomationMonitoringAzure Monitor/App InsightsLogging & AlertsSecurityMicrosoft Entra ID/Key VaultAuth & SecretsDeploymentVercel (Frontend), Render (Backend Fallback)Hosting
+Key Features
+1. Real-time Monitoring
+
+Live device status via SignalR and IoT Hub.
+Telemetry streaming with low latency.
+Automatic reconnection.
+
+2. Alert Management
+
+Threshold-based alerts processed in .NET.
+Severity levels with Logic Apps notifications.
+
+3. Device Management
+
+CRUD with grouping, using DDD.
+Health monitoring via IoT Hub.
+
+4. Analytics
+
+OEE calculation in C#.
+Historical analysis with cached queries.
+
+5. Firmware Management
+
+OTA via IoT Hub and Blob Storage.
+Status tracking.
+
+Security Architecture
+Authentication
+
+OAuth 2.0 with Entra ID.
+Secure hashing (bcrypt) as fallback.
+Token refresh.
+
+Authorization
+
+RBAC integrated with Entra ID.
+Managed Identities for services.
+Policy-driven access.
+
+Data Protection
+
+TLS encryption.
+Key Vault for secrets.
+Input validation.
+
+Scalability Considerations
+Horizontal Scaling
+
+Stateless .NET services in K8s.
+IoT Hub scaling units.
+Redis for distributed caching.
+
+Performance Optimization
+
+EF Core query optimization.
+AsyncAPI for events.
+Load balancing in AKS.
+
+Monitoring & Observability
+
+App Insights for telemetry.
+Log Analytics for queries.
+Alerts via Azure Monitor.
+
+Deployment Architecture
+text┌─────────────────────────────────────┐
 │     Production Environment          │
 ├─────────────────────────────────────┤
-│  Load Balancer (Optional)           │
+│  Azure API Management (Gateway)     │
 │         ↓                           │
 │  ┌─────────────────────────────┐   │
-│  │  Application Server         │   │
-│  │  (Node.js + Express)        │   │
-│  │  - TRPC API                 │   │
-│  │  - WebSocket Handler        │   │
-│  │  - Static Files             │   │
+│  │  AKS Cluster (Kubernetes)   │   │
+│  │  - .NET Pods (Docker)       │   │
+│  │  - SignalR Service          │   │
+│  │  - Portainer UI             │   │
 │  └─────────────────────────────┘   │
 │         ↓                           │
 │  ┌─────────────────────────────┐   │
-│  │  Database Server            │   │
-│  │  (MySQL)                    │   │
-│  │  - Persistent Data          │   │
-│  │  - Backup & Recovery        │   │
+│  │  Data Services              │   │
+│  │  - Aiven MySQL              │   │
+│  │  - Azure Redis Cache        │   │
 │  └─────────────────────────────┘   │
 │         ↓                           │
 │  ┌─────────────────────────────┐   │
-│  │  External Services          │   │
-│  │  - Email Service            │   │
-│  │  - SMS Gateway              │   │
+│  │  IoT & Serverless           │   │
+│  │  - Azure IoT Hub            │   │
+│  │  - Azure Functions          │   │
+│  │  - Logic Apps               │   │
 │  └─────────────────────────────┘   │
+│         ↓                           │
+│  Vercel (React Frontend)            │
 └─────────────────────────────────────┘
-```
+IaC: Provisioned with Bicep for Azure resources, Terraform for Aiven DB.
+CI/CD: GitHub Actions for build/deploy, with TDD via xUnit.
+Development Workflow
 
-## Development Workflow
+Local Development
+Docker Compose for local stack.
+Vite dev server.
+EF Core migrations.
 
-1. **Local Development**
-   - Start dev server: `pnpm dev`
-   - Hot module reloading enabled
-   - Mock data seeding available
+Testing
+Unit/Integration tests (xUnit).
+TDD practices.
+Swagger for API testing.
 
-2. **Testing**
-   - Unit tests: `pnpm test`
-   - Type checking: `pnpm check`
-   - Build verification: `pnpm build`
+Deployment
+GitHub Actions pipeline.
+Bicep/Terraform apply.
+Kubernetes manifests via Helm.
 
-3. **Deployment**
-   - Build production bundle: `pnpm build`
-   - Run deployment script: `./deploy.sh`
-   - Database migrations: `pnpm db:push`
 
-## SOLID Principles Implementation
+SOLID Principles Implementation
+Single Responsibility
 
-### Single Responsibility
-- Each component has one clear purpose
-- Services are focused and specialized
-- Separation of concerns throughout
+Each microservice/Domain has one purpose.
 
-### Open/Closed
-- Components extensible through props
-- Services extensible through interfaces
-- Plugin architecture for notifications
+Open/Closed
 
-### Liskov Substitution
-- Consistent interfaces across services
-- Predictable behavior across implementations
-- Type-safe substitution
+Extensible via interfaces.
 
-### Interface Segregation
-- Minimal required props per component
-- Focused service interfaces
-- Specific API endpoints
+Liskov Substitution
 
-### Dependency Inversion
-- Services depend on abstractions
-- Dependency injection pattern
-- No hard dependencies on implementations
+Consistent behaviors.
 
-## Performance Metrics
+Interface Segregation
 
-- **API Response Time**: < 200ms (p95)
-- **WebSocket Latency**: < 100ms
-- **Dashboard Load Time**: < 2s
-- **Database Query Time**: < 50ms (p95)
-- **Memory Usage**: < 512MB
-- **CPU Usage**: < 50% under normal load
+Focused interfaces.
 
-## Future Enhancements
+Dependency Inversion
 
-1. **Machine Learning**
-   - Predictive maintenance
-   - Anomaly detection
-   - Pattern recognition
+DI in .NET.
 
-2. **Advanced Analytics**
-   - Real-time dashboards
-   - Custom reporting
-   - Data export capabilities
+Performance Metrics
 
-3. **Integration**
-   - Third-party API integrations
-   - MQTT support
-   - Cloud connectivity
+API Response Time: < 200ms (p95)
+SignalR Latency: < 100ms
+Dashboard Load Time: < 2s
+DB Query Time: < 50ms (p95)
+Memory Usage: < 512MB/pod
+CPU Usage: < 50% under load
 
-4. **Scalability**
-   - Microservices architecture
-   - Kubernetes deployment
-   - Multi-region support
+Future Enhancements
+
+Machine Learning
+Azure ML for predictive maintenance.
+
+Advanced Analytics
+Power BI integration.
+
+Integration
+Kafka for event streaming.
+
+Scalability
+Multi-region AKS.

@@ -86,7 +86,7 @@ export default function SmartFactoryIoTDocumentation() {
               <p className="text-slate-400 mb-8 leading-relaxed">{doc.description}</p>
               <div className="flex flex-col gap-3">
                 <a 
-                  href={`${baseUrl}${doc.mdPath}`} 
+                  href={`${baseUrl}${doc.pdfPath}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-700/50 text-white font-bold rounded-xl hover:bg-slate-600 transition-all"

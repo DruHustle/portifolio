@@ -21,12 +21,12 @@ export default function Analytics() {
 
     return {
       totalVisits: stats.totalPageVisits.toLocaleString(),
-      totalDownloads: stats.totalResumeDownloads.toLocaleString(),
+      totalDownloads: stats.totalResumeViews.toLocaleString(),
       lastVisit: stats.lastPageVisit
         ? new Date(stats.lastPageVisit).toLocaleDateString()
         : "Never",
-      lastDownload: stats.lastResumeDownload
-        ? new Date(stats.lastResumeDownload).toLocaleDateString()
+      lastDownload: stats.lastResumeView
+        ? new Date(stats.lastResumeView).toLocaleDateString()
         : "Never",
     };
   }, [stats]);

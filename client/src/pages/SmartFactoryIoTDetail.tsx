@@ -3,11 +3,13 @@ import { ArrowLeft, ExternalLink, Github, Cpu, Shield, Zap, BarChart3, Cloud, Gl
 import { useMemo, useEffect } from "react";
 import { useNavigationState } from "@/hooks/useNavigationState";
 import { safeSessionStorage } from "@/lib/storage";
+import { analyticsService } from "@/services/analyticsService";
 
 export default function SmartFactoryIoTDetail() {
   const { showBackButton } = useNavigationState();
   
   useEffect(() => {
+    analyticsService.trackPageVisit("smart-factory-iot-detail");
     window.scrollTo(0, 0);
   }, []);
 

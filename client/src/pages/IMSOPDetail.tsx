@@ -3,11 +3,13 @@ import { ArrowLeft, ExternalLink, Github, Server, Shield, Zap, BarChart3, Databa
 import { useMemo, useEffect } from "react";
 import { useNavigationState } from "@/hooks/useNavigationState";
 import { safeSessionStorage } from "@/lib/storage";
+import { analyticsService } from "@/services/analyticsService";
 
 export default function IMSOPDetail() {
   const { showBackButton } = useNavigationState();
   
   useEffect(() => {
+    analyticsService.trackPageVisit("imsop-detail");
     window.scrollTo(0, 0);
   }, []);
 

@@ -3,11 +3,13 @@ import { ArrowLeft, ExternalLink, Github, BookOpen, Code2, Layers, Award, Zap, S
 import { useMemo, useEffect } from "react";
 import { useNavigationState } from "@/hooks/useNavigationState";
 import { safeSessionStorage } from "@/lib/storage";
+import { analyticsService } from "@/services/analyticsService";
 
 export default function SAPBTPAIHubDetail() {
   const { showBackButton } = useNavigationState();
   
   useEffect(() => {
+    analyticsService.trackPageVisit("sap-btp-ai-hub-detail");
     window.scrollTo(0, 0);
   }, []);
 

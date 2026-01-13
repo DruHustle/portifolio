@@ -1,10 +1,25 @@
 #!/bin/bash
-# Portfolio - Deployment Script with Rollback Mechanism
-# This script automates the deployment to GitHub Pages with automatic rollback on failure
+# Portfolio - Deployment Script with Robust Rollback & Error Visibility
+# Automated Build, Testing, and Safe Deployment Mechanism
 
 set -e  # Exit on any error
 
 echo "🚀 Starting deployment for Portfolio..."
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+print_success() {
+    echo -e "${GREEN}✓ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
 
 # Store the current gh-pages commit for potential rollback
 PREVIOUS_COMMIT=$(git rev-parse origin/gh-pages 2>/dev/null || echo "")
@@ -12,7 +27,7 @@ PREVIOUS_COMMIT=$(git rev-parse origin/gh-pages 2>/dev/null || echo "")
 # Rollback function
 rollback() {
     echo ""
-    echo "⚠️  Deployment failed. Initiating rollback..."
+    echo -e "${RED}⚠️  Deployment failed. Initiating rollback...${NC}"
     
     if [ -z "$PREVIOUS_COMMIT" ]; then
         echo "❌ No previous version available for rollback."
@@ -26,26 +41,25 @@ rollback() {
     
     git checkout main 2>/dev/null || git checkout master
     
-    echo "✅ Rollback complete! Website reverted to previous working version."
+    echo -e "${GREEN}✅ Rollback complete! Website reverted to previous working version.${NC}"
     exit 1
 }
 
 # Set trap to call rollback on error
 trap rollback ERR
 
-# Check if git is installed
+# Check prerequisites
 if ! command -v git &> /dev/null; then
     echo "❌ Error: git is not installed."
     exit 1
 fi
 
-# Check if pnpm is installed
 if ! command -v pnpm &> /dev/null; then
-    echo "❌ Error: pnpm is not installed. Please install Node.js and pnpm."
+    echo "❌ Error: pnpm is not installed."
     exit 1
 fi
 
-# Initialize git if not already initialized
+# Initialize git if needed
 if [ ! -d ".git" ]; then
     echo "📦 Initializing git repository..."
     git init
@@ -53,34 +67,33 @@ if [ ! -d ".git" ]; then
     git commit -m "Initial commit: Portfolio"
 fi
 
-# Ask for GitHub username if not already configured in remote
+# Check Remote Configuration
 REMOTE_URL=$(git remote get-url origin 2>/dev/null)
 if [ -z "$REMOTE_URL" ]; then
     echo "🔗 Configuring GitHub repository..."
     read -p "Enter your GitHub username: " USERNAME
-    git remote add origin "https://github.com/$USERNAME/portfolio.git"
-    echo "✅ Remote origin added: https://github.com/$USERNAME/portfolio.git"
+    read -p "Enter your repository name (default: portfolio): " REPO_NAME
+    REPO_NAME=${REPO_NAME:-portfolio}
+    git remote add origin "https://github.com/$USERNAME/$REPO_NAME.git"
+    print_success "Remote origin added"
 else
-    echo "✅ Remote origin already configured: $REMOTE_URL"
+    print_success "Remote origin configured: $REMOTE_URL"
 fi
 
 # Fetch latest changes
 echo "📡 Fetching latest changes..."
 git fetch origin
 
-# Store the current gh-pages commit for potential rollback
-PREVIOUS_COMMIT=$(git rev-parse origin/gh-pages 2>/dev/null || echo "")
-
 # Install dependencies
 echo "📦 Installing dependencies..."
-pnpm install
+pnpm install --frozen-lockfile || pnpm install
 
-# Run tests
+# Run tests (Fixed: Removed 2>/dev/null to show you why tests fail)
 echo "🧪 Running tests..."
-if pnpm test 2>/dev/null; then
-    echo "✅ All tests passed!"
+if pnpm test --reporter=default; then
+    print_success "All tests passed!"
 else
-    echo "❌ Tests failed. Aborting deployment."
+    echo -e "${RED}❌ Tests failed. See the detailed report above. Aborting deployment.${NC}"
     exit 1
 fi
 
@@ -94,11 +107,19 @@ if [ ! -d "dist" ]; then
     exit 1
 fi
 
+# Ensure gh-pages branch exists
+if ! git show-ref --verify --quiet refs/heads/gh-pages; then
+    echo "📝 Creating gh-pages branch..."
+    git checkout --orphan gh-pages
+    git reset --hard
+    git commit --allow-empty -m "Initial gh-pages commit"
+    git checkout main 2>/dev/null || git checkout master
+fi
+
 # Deploy to GitHub Pages
 echo "🚀 Deploying to GitHub Pages..."
-echo "NOTE: You may be asked for your GitHub credentials."
 
-# Create a temporary directory for the deployment
+# Create a temporary directory for deployment to keep workspace clean
 TEMP_DIR=$(mktemp -d)
 trap "rm -rf $TEMP_DIR" EXIT
 
@@ -108,11 +129,11 @@ cp -r dist/* "$TEMP_DIR/"
 # Switch to gh-pages branch
 git checkout gh-pages
 
-# Backup current gh-pages state
-BACKUP_COMMIT=$(git rev-parse HEAD)
+# Clear old content but PRESERVE the .git folder
+echo "🧹 Cleaning old files from gh-pages..."
+find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
 
-# Clear old content and copy new content
-find . -maxdepth 1 -not -name '.git' -not -name '.gitignore' -exec rm -rf {} +
+# Copy new content from temp
 cp -r "$TEMP_DIR"/* .
 
 # Verify new content was copied
@@ -120,6 +141,10 @@ if [ ! -f "index.html" ]; then
     echo "❌ Deployment failed: index.html not found in build output."
     exit 1
 fi
+
+# Create .gitignore using robust printf method
+printf "node_modules/\n.DS_Store\nThumbs.db\n*.env\n" > .gitignore
+print_success ".gitignore created for gh-pages"
 
 # Commit and push
 git add .
@@ -134,14 +159,9 @@ fi
 # Switch back to main branch
 git checkout main 2>/dev/null || git checkout master
 
-echo ""
-echo "✨ Deployment complete!"
+echo -e "\n${GREEN}✨ Deployment complete!${NC}"
 REPO_URL=$(git remote get-url origin | sed -E 's/.*github.com[:\/]([^\/]+)\/([^\.]+).*/\1\/\2/')
-echo "🌐 Your website should be live at: https://$(echo $REPO_URL | cut -d'/' -f1).github.io/$(echo $REPO_URL | cut -d'/' -f2)"
-echo ""
-echo "📝 Note: Make sure GitHub Pages is enabled in your repository settings:"
-echo "   Settings > Pages > Source: Deploy from a branch > Branch: gh-pages"
-echo ""
-echo "🔄 Rollback Information:"
-echo "   Previous version: $PREVIOUS_COMMIT"
-echo "   Current version: $(git rev-parse origin/gh-pages)"
+echo "🌐 Your website is live at: https://$(echo $REPO_URL | cut -d'/' -f1).github.io/$(echo $REPO_URL | cut -d'/' -f2)"
+
+echo -e "\n🔄 Rollback Information:"
+echo "   Previous version hash: $PREVIOUS_COMMIT"

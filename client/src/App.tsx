@@ -15,6 +15,7 @@ import LearningHubDetail from "./pages/LearningHubDetail";
 import SmartFactoryIoTDetail from "./pages/SmartFactoryIoTDetail";
 import IMSOPDocumentation from "./pages/IMSOPDocumentation";
 import SmartFactoryIoTDocumentation from "./pages/SmartFactoryIoTDocumentation";
+import AnalyticsPage from "./pages/AnalyticsPage";
 
 
 function AppRouter() {
@@ -22,7 +23,7 @@ function AppRouter() {
     <WouterRouter hook={useHashLocation}>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/analytics" component={Analytics} />
+        <Route path="/analytics" component={AnalyticsPage} />
         <Route path="/projects/imsop" component={IMSOPDetail} />
         <Route path="/projects/imsop/documentation" component={IMSOPDocumentation} />
         <Route path="/projects/sap-btp-ai-hub" component={LearningHubDetail} />

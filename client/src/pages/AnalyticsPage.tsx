@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Eye, ExternalLink, BarChart3, ShieldCheck, Zap } from "lucide-react";
 import { analyticsService, AnalyticsStats } from "@/services/analyticsService";
 
-export default function Analytics() {
+export default function AnalyticsPage() {
   const [stats, setStats] = useState<AnalyticsStats | null>(null);
   const [loading, setLoading] = useState(true);
 

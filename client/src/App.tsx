@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react';
+
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
@@ -13,7 +15,6 @@ import LearningHubDetail from "./pages/LearningHubDetail";
 import SmartFactoryIoTDetail from "./pages/SmartFactoryIoTDetail";
 import IMSOPDocumentation from "./pages/IMSOPDocumentation";
 import SmartFactoryIoTDocumentation from "./pages/SmartFactoryIoTDocumentation";
-import Analytics from "./pages/Analytics";
 
 
 function AppRouter() {
@@ -41,6 +42,7 @@ export default function App() {
         <TooltipProvider>
           <Toaster position="top-center" richColors />
           <AppRouter />
+          <Analytics />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

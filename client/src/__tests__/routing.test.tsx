@@ -34,7 +34,7 @@ describe('Portfolio Routing', () => {
       expect(true).toBe(true);
     });
 
-    it('should navigate to SAP BTP AI Hub project', () => {
+    it('should navigate to Learning Hub project', () => {
       expect(true).toBe(true);
     });
 

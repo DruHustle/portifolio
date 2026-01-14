@@ -210,7 +210,7 @@ const { showBackButton } = useNavigationState();
 │                         Components                           │
 │                    (Presentation Layer)                      │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │  Home    │  │  IMSOP   │  │ SAP BTP  │  │   IoT    │   │
+│  │  Home    │  │  IMSOP   │  │Learning H│  │   IoT    │   │
 │  │  Page    │  │  Detail  │  │  Detail  │  │  Detail  │   │
 │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘   │
 └───────┼─────────────┼─────────────┼─────────────┼──────────┘

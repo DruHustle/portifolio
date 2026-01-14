@@ -36,7 +36,7 @@ export const appRouter = router({
         },
         {
           id: "sap-btp-ai-hub",
-          title: "SAP BTP AI Learning Hub",
+          title: "Learning Hub",
           description: "Enterprise AI Education Platform",
         },
       ],
@@ -54,7 +54,7 @@ export const appRouter = router({
         },
         "sap-btp-ai-hub": {
           id: "sap-btp-ai-hub",
-          title: "SAP BTP AI Learning Hub",
+          title: "Learning Hub",
           description: "Enterprise AI Education Platform",
         },
       };

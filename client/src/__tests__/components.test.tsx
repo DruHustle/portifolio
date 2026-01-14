@@ -36,10 +36,10 @@ describe('ProjectService', () => {
     expect(project?.subtitle).toContain('Supply Chain');
   });
 
-  it('should retrieve SAP BTP project data', () => {
+  it('should retrieve Learning Hub project data', () => {
     const project = ProjectService.getProjectById('sap-btp-ai-hub');
     expect(project).toBeDefined();
-    expect(project?.title).toBe('SAP BTP AI Learning Hub');
+    expect(project?.title).toBe('Learning Hub');
     expect(project?.subtitle).toContain('Education');
   });
 

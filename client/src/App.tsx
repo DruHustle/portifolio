@@ -9,7 +9,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 
 import Home from "./pages/Home";
 import IMSOPDetail from "./pages/IMSOPDetail";
-import SAPBTPAIHubDetail from "./pages/SAPBTPAIHubDetail";
+import LearningHubDetail from "./pages/LearningHubDetail";
 import SmartFactoryIoTDetail from "./pages/SmartFactoryIoTDetail";
 import IMSOPDocumentation from "./pages/IMSOPDocumentation";
 import SmartFactoryIoTDocumentation from "./pages/SmartFactoryIoTDocumentation";
@@ -24,7 +24,7 @@ function AppRouter() {
         <Route path="/analytics" component={Analytics} />
         <Route path="/projects/imsop" component={IMSOPDetail} />
         <Route path="/projects/imsop/documentation" component={IMSOPDocumentation} />
-        <Route path="/projects/sap-btp-ai-hub" component={SAPBTPAIHubDetail} />
+        <Route path="/projects/sap-btp-ai-hub" component={LearningHubDetail} />
         <Route path="/projects/smart-factory-iot" component={SmartFactoryIoTDetail} />
         <Route path="/projects/smart-factory-iot/documentation" component={SmartFactoryIoTDocumentation} />
         <Route path="/404" component={NotFound} />

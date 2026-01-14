@@ -79,9 +79,9 @@ export const projects: Project[] = [
   },
   {
     id: "sap-btp-ai-hub",
-    title: "SAP BTP AI Learning Hub",
+    title: "Learning Hub",
     description:
-      "Interactive learning platform with hands-on tutorials, AI playground, and architecture builder for mastering SAP Business Technology Platform AI solutions.",
+      "Interactive AI learning hub for designing, prototyping, and deploying real-world solutions using a modern multi-tool ecosystem — including .NET, SAP BTP, NVIDIA technologies, and cloud AI services — featuring hands-on tutorials, an API playground, and a visual architecture builder.",
     tags: [
       { label: "React", color: "blue" },
       { label: "Python", color: "cyan" },

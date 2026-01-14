@@ -5,7 +5,7 @@ import { useNavigationState } from "@/hooks/useNavigationState";
 import { safeSessionStorage } from "@/lib/storage";
 import { analyticsService } from "@/services/analyticsService";
 
-export default function SAPBTPAIHubDetail() {
+export default function LearningHubDetail() {
   const { showBackButton } = useNavigationState();
   
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function SAPBTPAIHubDetail() {
 
   const projectData = useMemo(
     () => ({
-      title: "SAP BTP AI Learning Hub",
+      title: "Learning Hub",
       subtitle: "Enterprise AI Education Platform",
       description:
         "An interactive, comprehensive learning platform designed for mastering AI business solutions on SAP Business Technology Platform (BTP). The platform provides hands-on tutorials, best practices, and resources for developers, architects, and business professionals.",

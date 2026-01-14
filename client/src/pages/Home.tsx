@@ -298,10 +298,10 @@ export default function Home() {
                 color: "from-cyan-500 to-teal-500" 
               },
               {
-                title: " Learning Hub",
-                sub:  "Enterprise AI Education Platform",
-                desc: "Interactive AI learning hub for designing, prototyping, and deploying real-world solutions using a modern multi-tool ecosystem — including Python,.NET, SAP BTP, NVIDIA technologies, and cloud AI services — featuring hands-on tutorials, an API playground, and a visual architecture builder.",
-                tech: ["React", "SAP BTP","NVIDIACUDA", "PyTorch", "TensorFlow", "Data & Vector Infrastructure", "Hugging Face", "OpenAI", "LangChain", "NVIDIA CUDA", "Azure AI", "SAP BTP AI Core", "SageMaker", "Vertex AI", "MLflow", "Kubeflow", "AI/ML", "TypeScript"],
+                title: "Learning Hub",
+                sub: "Enterprise AI Education Platform",
+                desc: "Interactive learning hub for designing, prototyping, and deploying real-world AI solutions using a modern multi-tool ecosystem.",
+                tech: ["Python", "OpenAI", "NVIDIA CUDA", "Azure AI", "SAP BTP AI Core", "AI/ML"],
                 link: "/projects/sap-btp-ai-hub",
                 color:"from-blue-500 to-indigo-500"
               }

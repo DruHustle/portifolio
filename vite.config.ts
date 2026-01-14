@@ -8,7 +8,7 @@ const plugins = [react(), tailwindcss(), jsxLocPlugin()];
 
 export default defineConfig({
   plugins,
-  base: "/", // Standard base path for Vercel deployment
+  base: "/portfolio/", // CRITICAL: Fix for GitHub Pages asset loading
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

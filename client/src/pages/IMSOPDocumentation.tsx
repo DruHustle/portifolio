@@ -8,20 +8,20 @@ const docs = [
   {
     title: "Architecture Overview",
     description: "Detailed technical design, including system architecture, .NET 8 microservices, and multi-cloud support.",
-    mdPath: "docs/imsop/architecture.md",
-    pdfPath: "docs/imsop/architecture.pdf",
+    mdPath: "/docs/imsop/architecture.md",
+    pdfPath: "/docs/imsop/architecture.pdf",
   },
   {
     title: "Database Schema",
     description: "Comprehensive database design and entity relationship specifications for Aiven PostgreSQL.",
-    mdPath: "docs/imsop/database-schema.md",
-    pdfPath: "docs/imsop/database-schema.pdf",
+    mdPath: "/docs/imsop/database-schema.md",
+    pdfPath: "/docs/imsop/database-schema.pdf",
   },
   {
     title: "API Flows",
     description: "Technical specification for REST and GraphQL APIs used across the platform.",
-    mdPath: "docs/imsop/api-flows.md",
-    pdfPath: "docs/imsop/api-flows.pdf",
+    mdPath: "/docs/imsop/api-flows.md",
+    pdfPath: "/docs/imsop/api-flows.pdf",
   },
 ];
 

@@ -9,22 +9,22 @@ const docs = [
     title: "Architecture Overview",
     description:
       "Detailed technical design, including system architecture, .NET microservices, and Azure IoT Hub integration.",
-    mdPath: "/docs/smartfactoryiot/architecture.md",
-    pdfPath: "/docs/smartfactoryiot/architecture.pdf",
+    mdPath: "docs/smartfactoryiot/architecture.md",
+    pdfPath: "docs/smartfactoryiot/architecture.pdf",
   },
   {
     title: "Database Schema",
     description:
       "Comprehensive database design and entity relationship specifications for Aiven MySQL.",
-    mdPath: "/docs/smartfactoryiot/database-schema.md",
-    pdfPath: "/docs/smartfactoryiot/database-schema.pdf",
+    mdPath: "docs/smartfactoryiot/database-schema.md",
+    pdfPath: "docs/smartfactoryiot/database-schema.pdf",
   },
   {
     title: "API Flows",
     description:
       "Technical specification for REST APIs and SignalR endpoints used for device management.",
-    mdPath: "/docs/smartfactoryiot/api-flows.md",
-    pdfPath: "/docs/smartfactoryiot/api-flows.pdf",
+    mdPath: "docs/smartfactoryiot/api-flows.md",
+    pdfPath: "docs/smartfactoryiot/api-flows.pdf",
   },
 ];
 

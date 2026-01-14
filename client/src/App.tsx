@@ -1,5 +1,3 @@
-import { Analytics } from '@vercel/analytics/react';
-
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
@@ -43,7 +41,6 @@ export default function App() {
         <TooltipProvider>
           <Toaster position="top-center" richColors />
           <AppRouter />
-          <Analytics />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

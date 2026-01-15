@@ -129,9 +129,11 @@ export default function SmartFactoryIoTDetail() {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight leading-tight">{projectData.title}</h1>
               <p className="text-xl font-medium text-slate-300 mb-8 leading-relaxed">{projectData.subtitle}</p>
               <div className="flex flex-wrap gap-4">
+                {/* possible future use of GitHub link
                 <a href="https://github.com/DruHustle/smart-factory-iot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-500 transition-all hover:scale-105">
                   <Github className="w-5 h-5" /> GitHub Repo
                 </a>
+                  */}
                 <a href="https://druhustle.github.io/smart-factory-iot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 border-2 border-orange-600 text-orange-300 font-bold rounded-xl hover:bg-orange-600/10 transition-all hover:scale-105">
                   <ExternalLink className="w-5 h-5" /> Live Demo
                 </a>

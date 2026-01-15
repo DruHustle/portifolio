@@ -121,9 +121,11 @@ export default function LearningHubDetail() {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight leading-tight">{projectData.title}</h1>
               <p className="text-xl font-medium text-slate-300 mb-8 leading-relaxed">{projectData.subtitle}</p>
               <div className="flex flex-wrap gap-4">
+                {/* Possible future use of GitHub link
                 <a href="https://github.com/DruHustle/sap-btp-ai-hub" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-400 transition-all hover:scale-105">
                   <Github className="w-5 h-5" /> Source Code
                 </a>
+                */}  
                 <a href="https://DruHustle.github.io/sap-btp-ai-hub/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-500 text-blue-400 font-bold rounded-xl hover:bg-blue-500/10 transition-all hover:scale-105">
                   <ExternalLink className="w-5 h-5" /> Live Demo
                 </a>

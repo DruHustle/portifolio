@@ -126,7 +126,7 @@ export default function LearningHubDetail() {
                   <Github className="w-5 h-5" /> Source Code
                 </a>
                 */}  
-                <a href="https://DruHustle.github.io/sap-btp-ai-hub/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-500 text-blue-400 font-bold rounded-xl hover:bg-blue-500/10 transition-all hover:scale-105">
+                <a href="https://DruHustle.github.io/sap-btp-ai-hub/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-400 transition-all hover:scale-105">
                   <ExternalLink className="w-5 h-5" /> Live Demo
                 </a>
               </div>

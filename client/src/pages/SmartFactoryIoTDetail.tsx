@@ -134,7 +134,7 @@ export default function SmartFactoryIoTDetail() {
                   <Github className="w-5 h-5" /> GitHub Repo
                 </a>
                   */}
-                <a href="https://druhustle.github.io/smart-factory-iot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 border-2 border-orange-600 text-orange-300 font-bold rounded-xl hover:bg-orange-600/10 transition-all hover:scale-105">
+                <a href="https://druhustle.github.io/smart-factory-iot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-500 transition-all hover:scale-105">
                   <ExternalLink className="w-5 h-5" /> Live Demo
                 </a>
                 <Link href="/projects/smart-factory-iot/documentation">

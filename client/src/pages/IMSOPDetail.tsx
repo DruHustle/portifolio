@@ -123,9 +123,16 @@ export default function IMSOPDetail() {
                   <Github className="w-5 h-5" /> Source Code
                 </a>
                  */}  
-                <a href="https://DruHustle.github.io/imsop-app/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition-all">
-                  <ExternalLink className="w-5 h-5" /> Live Demo
-                </a>
+
+                  <a 
+                    href={ typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "https://DruHustle.github.io/imsop-app/"  : "https://imsop-app.vercel.app/"}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition-all"
+                  >
+                    <ExternalLink className="w-5 h-5" /> Live Demo
+                  </a>
+
                 <Link href="/projects/imsop/documentation">
                   <a className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all border border-slate-700">
                     <FileText className="w-5 h-5 text-cyan-400" /> Documentation

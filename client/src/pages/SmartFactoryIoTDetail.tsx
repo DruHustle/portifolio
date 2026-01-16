@@ -134,9 +134,15 @@ export default function SmartFactoryIoTDetail() {
                   <Github className="w-5 h-5" /> GitHub Repo
                 </a>
                   */}
-                <a href="https://druhustle.github.io/smart-factory-iot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-500 transition-all hover:scale-105">
-                  <ExternalLink className="w-5 h-5" /> Live Demo
-                </a>
+                  <a 
+                    href={ typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "https://DruHustle.github.io/smart-factory-iot/"  : "https://smart-factory-iot-app.vercel.app/"}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition-all"
+                  >
+                    <ExternalLink className="w-5 h-5" /> Live Demo
+                  </a>
+
                 <Link href="/projects/smart-factory-iot/documentation">
                   <a className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all hover:scale-105 border border-slate-700">
                     <FileText className="w-5 h-5 text-orange-400" /> Documentation 

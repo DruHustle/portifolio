@@ -138,7 +138,7 @@ export default function SmartFactoryIoTDetail() {
                     href={ typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "https://DruHustle.github.io/smart-factory-iot/"  : "https://smart-factory-iot-app.vercel.app/"}
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition-all"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-500 transition-all hover:scale-105"
                   >
                     <ExternalLink className="w-5 h-5" /> Live Demo
                   </a>

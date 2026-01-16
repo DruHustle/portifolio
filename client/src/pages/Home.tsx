@@ -239,7 +239,7 @@ export default function Home() {
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-gray-900 border-gray-800 text-white p-0">
+              <SheetContent side="right" className="bg-gray-900 border-gray-800 text-white p-0 w-fit min-w-[140px]">
                 <SheetHeader className="sr-only">
                   <SheetTitle>Navigation Menu</SheetTitle>
                 </SheetHeader>

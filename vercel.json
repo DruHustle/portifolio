@@ -10,9 +10,8 @@
       "destination": "/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!assets/|favicon.ico|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]
-
 }

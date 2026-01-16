@@ -125,8 +125,15 @@ export default function LearningHubDetail() {
                 </a>
                 */}  
 
-                  <a 
-                    href={ typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "https://DruHustle.github.io/learning-hub/"  : "https://tech-learning-hub-app.vercel.app/"}
+                  <a href={
+                      typeof window !== "undefined" 
+                        ? window.location.hostname.includes("github.io")
+                          ? "https://DruHustle.github.io/learning-hub/"
+                          : window.location.hostname.includes("vercel.app")
+                            ? "https://tech-learning-hub-app.vercel.app/"
+                            : window.location.origin // Fallback for localhost (e.g., http://localhost:3000)
+                        : "#"
+                    }
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-400 transition-all hover:scale-105"

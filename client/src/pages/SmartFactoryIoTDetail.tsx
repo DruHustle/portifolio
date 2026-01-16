@@ -134,8 +134,15 @@ export default function SmartFactoryIoTDetail() {
                   <Github className="w-5 h-5" /> GitHub Repo
                 </a>
                   */}
-                  <a 
-                    href={ typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "https://DruHustle.github.io/smart-factory-iot/"  : "https://smart-factory-iot-app.vercel.app/"}
+                  <a href={
+                      typeof window !== "undefined" 
+                        ? window.location.hostname.includes("github.io")
+                          ? "https://DruHustle.github.io/smart-factory-iot/"
+                          : window.location.hostname.includes("vercel.app")
+                            ? "https://smart-factory-iot-app.vercel.app/"
+                            : window.location.origin // Fallback for localhost (e.g., http://localhost:3000)
+                        : "#"
+                    }
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-500 transition-all hover:scale-105"

@@ -124,8 +124,15 @@ export default function IMSOPDetail() {
                 </a>
                  */}  
 
-                  <a 
-                    href={ typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "https://DruHustle.github.io/imsop-app/"  : "https://imsop-app.vercel.app/"}
+                  <a href={
+                      typeof window !== "undefined" 
+                        ? window.location.hostname.includes("github.io")
+                          ? "https://DruHustle.github.io/imsop-app/"
+                          : window.location.hostname.includes("vercel.app")
+                            ? "https://imsop-app.vercel.app/"
+                            : window.location.origin // Fallback for localhost (e.g., http://localhost:3000)
+                        : "#"
+                    }
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition-all"

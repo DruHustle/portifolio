@@ -24,12 +24,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { NavigationService } from "@/services/navigationService";
 import { analyticsService } from "@/services/analyticsService";
 import { safeSessionStorage } from "@/lib/storage";
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
     analyticsService.trackPageVisit("home");
   }, []);
@@ -233,7 +235,7 @@ export default function Home() {
 
           {/* Mobile Navigation */}
           <div className="md:hidden">
-            <Sheet>
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
                   <Menu className="w-6 h-6" />
@@ -248,6 +250,7 @@ export default function Home() {
                     href="#projects" 
                     onClick={(e) => {
                       scrollToSection(e, "projects");
+                      setIsMenuOpen(false);
                     }}
                     className="text-lg font-medium hover:text-teal-400 transition-colors"
                   >
@@ -255,14 +258,20 @@ export default function Home() {
                   </a>
                   <a 
                     href="#skills" 
-                    onClick={(e) => scrollToSection(e, "skills")}
+                    onClick={(e) => {
+                      scrollToSection(e, "skills");
+                      setIsMenuOpen(false);
+                    }}
                     className="text-lg font-medium hover:text-teal-400 transition-colors"
                   >
                     Skills
                   </a>
                   <a 
                     href="#about" 
-                    onClick={(e) => scrollToSection(e, "about")}
+                    onClick={(e) => {
+                      scrollToSection(e, "about");
+                      setIsMenuOpen(false);
+                    }}
                     className="text-lg font-medium hover:text-teal-400 transition-colors"
                   >
                     About

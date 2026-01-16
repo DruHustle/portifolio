@@ -233,7 +233,7 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Mobile Navigation */}
+         {/* Mobile Navigation */}
           <div className="md:hidden">
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
@@ -241,10 +241,17 @@ export default function Home() {
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all text-white p-0 w-fit min-w-[140px]">
+              <SheetContent 
+                side="right" 
+                // 1. h-[calc(100dvh-1rem)] + m-2: Makes the sheet "float" slightly with rounded corners, 
+                //    preventing the bottom gap/white panel issue while keeping the rounded look.
+                // 2. !bg-black/60: Forces a dark background override to prevent default white from showing.
+                className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 text-white p-0 w-fit min-w-[140px] h-[calc(100dvh-1rem)] m-2 flex flex-col focus:outline-none"
+              >
                 <SheetHeader className="sr-only">
                   <SheetTitle>Navigation Menu</SheetTitle>
                 </SheetHeader>
+                
                 <div className="flex flex-col p-6 pt-16 gap-6">
                   <a 
                     href="#projects" 
@@ -280,6 +287,7 @@ export default function Home() {
               </SheetContent>
             </Sheet>
           </div>
+
         </div>
       </nav>
 

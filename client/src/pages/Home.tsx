@@ -14,7 +14,16 @@ import {
   Award,
   Target,
   TrendingUp,
+  Menu,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useMemo, useEffect } from "react";
 import { NavigationService } from "@/services/navigationService";
 import { analyticsService } from "@/services/analyticsService";
@@ -220,6 +229,47 @@ export default function Home() {
               className="text-sm font-medium hover:text-teal-400 transition-all duration-300 cursor-pointer">
               About
             </a>
+          </div>
+
+          {/* Mobile Navigation */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="bg-gray-900 border-gray-800 text-white p-0">
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Navigation Menu</SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col p-6 pt-16 gap-6">
+                  <a 
+                    href="#projects" 
+                    onClick={(e) => {
+                      scrollToSection(e, "projects");
+                    }}
+                    className="text-lg font-medium hover:text-teal-400 transition-colors"
+                  >
+                    Projects
+                  </a>
+                  <a 
+                    href="#skills" 
+                    onClick={(e) => scrollToSection(e, "skills")}
+                    className="text-lg font-medium hover:text-teal-400 transition-colors"
+                  >
+                    Skills
+                  </a>
+                  <a 
+                    href="#about" 
+                    onClick={(e) => scrollToSection(e, "about")}
+                    className="text-lg font-medium hover:text-teal-400 transition-colors"
+                  >
+                    About
+                  </a>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </nav>

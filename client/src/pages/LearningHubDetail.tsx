@@ -18,13 +18,13 @@ export default function LearningHubDetail() {
       title: "Learning Hub",
       subtitle: "Enterprise AI Education Platform",
       description:
-        "An interactive, comprehensive learning platform designed for mastering AI business solutions on SAP Business Technology Platform (BTP). The platform provides hands-on tutorials, best practices, and resources for developers, architects, and business professionals.",
+        "An interactive, comprehensive learning platform designed for mastering AI business solutions. The platform provides hands-on tutorials, best practices, and resources for developers, architects, and business professionals.",
       stats: [
         { label: "Tutorials", value: "6+", icon: BookOpen },
         { label: "Learning Paths", value: "3", icon: Layers },
         { label: "Interactive Tools", value: "4+", icon: Code2 },
       ],
-      problemStatement: "Organizations face significant challenges in adopting AI solutions on SAP BTP due to a lack of comprehensive, hands-on learning resources and a steep learning curve for services like SAP AI Core and Generative AI Hub.",
+      problemStatement: "Organizations face significant challenges in adopting AI solutions on due to a lack of comprehensive, hands-on learning resources and a steep learning curve.",
       requirements: [
         "Provide comprehensive tutorials for all skill levels",
         "Create interactive playground for LLM experimentation",
@@ -71,10 +71,8 @@ export default function LearningHubDetail() {
         },
       ],
       results: [
-        "6+ comprehensive tutorials delivered",
-        "98+ Lighthouse performance score",
+        "Hands-on tutorials delivered",
         "Interactive playground and quiz system",
-        "Fully responsive mobile-first design",
       ],
     }),
     []

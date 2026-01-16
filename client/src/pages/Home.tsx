@@ -241,7 +241,7 @@ export default function Home() {
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-gray-900 border-gray-800 text-white p-0 w-fit min-w-[140px]">
+              <SheetContent side="right" className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all text-white p-0 w-fit min-w-[140px]">
                 <SheetHeader className="sr-only">
                   <SheetTitle>Navigation Menu</SheetTitle>
                 </SheetHeader>
@@ -419,13 +419,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* Value Proposition Section */}
       <section id="about" className="py-20 bg-[#E0F2FE]">
         <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Solutions that deliver business value</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Adding Value</h2>
                 <p className="text-gray-700 text-lg leading-relaxed mb-6">
                   With extensive experience in enterprise software engineering, I specialize in building resilient, scalable, and cost-effective cloud solutions. My approach combines deep technical expertise with a focus on business value and operational excellence.
                 </p>
@@ -433,14 +433,14 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
                 {principles.map((p, i) => (
-                  <div key={i} className="space-y-2">
+                  <div key={i} className="p-6 bg-white rounded-xl border border-blue-50 shadow-sm hover:shadow-md transition-all">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
                         <p.icon className="w-4 h-4 text-teal-600" />
                       </div>
                       <h4 className="font-bold text-gray-900">{p.title}</h4>
                     </div>
-                    <p className="text-sm text-gray-600 leading-snug pl-11">{p.desc}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{p.desc}</p>
                   </div>
                ))}
 

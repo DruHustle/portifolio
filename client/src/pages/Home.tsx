@@ -344,7 +344,7 @@ export default function Home() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Projects</h2>
             <p className="text-gray-700 text-lg max-w-2xl mx-auto mb-2">Enterprise-scale solutions and architectural implementations.</p>
-            <p className="text-teal-600 font-bold text-sm animate-pulse">Click to discover more</p>
+            <p className="text-teal-600 font-bold text-sm animate-pulse">Click on projects below to discover more</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
